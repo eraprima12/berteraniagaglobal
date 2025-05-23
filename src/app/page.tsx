@@ -5,6 +5,7 @@ import { ProductShowcaseSection } from '../components/sections/product-showcase-
 import { OurStorySection } from '../components/sections/our-story-section';
 import { OurTeamSection } from '../components/sections/our-team-section';
 import { ContactUsSection } from '../components/sections/contact-us-section';
+import { AnimatedSection } from '../components/common/AnimatedSection';
 
 export const metadata: Metadata = {
   title: 'Bertera Niaga Global - Premium Indonesian Coffee Export',
@@ -14,9 +15,9 @@ export const metadata: Metadata = {
     description: 'Your trusted partner for high-quality Indonesian coffee. Explore our range of Arabica, Robusta, and Liberica beans.',
     images: [
       {
-        url: '/images/logo/bertera-logo.png', // Replace with an absolute URL to a hero image or logo if available
+        url: '/images/logo/bertera-logo.png', 
         width: 1200,
-        height: 200, // Adjusted to match logo aspect ratio, or use a more general OG image aspect ratio
+        height: 200, 
         alt: 'Bertera Niaga Global Logo',
       },
     ],
@@ -26,11 +27,29 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <div className="flex flex-col">
-      <ParallaxHomeSection />
-      <ProductShowcaseSection />
-      <OurStorySection />
-      <OurTeamSection />
-      <ContactUsSection />
+      <AnimatedSection
+        initialClass="opacity-0"
+        animateInClass="opacity-100"
+        transitionDuration="duration-1000"
+      >
+        <ParallaxHomeSection />
+      </AnimatedSection>
+
+      <AnimatedSection delay="delay-100">
+        <ProductShowcaseSection />
+      </AnimatedSection>
+
+      <AnimatedSection delay="delay-100">
+        <OurStorySection />
+      </AnimatedSection>
+
+      <AnimatedSection delay="delay-100">
+        <OurTeamSection />
+      </AnimatedSection>
+
+      <AnimatedSection delay="delay-100">
+        <ContactUsSection />
+      </AnimatedSection>
     </div>
   );
 }
