@@ -111,4 +111,47 @@
       transform: translateY(0) scale(1);
     }
   }
+
+  /* Shimmer animation for loading screen */
+  .shimmer-container {
+    /* Ensures the ::before pseudo-element is positioned relative to this container */
+    /* and that the shimmer effect is clipped to the container's bounds. */
+    /* 'relative' and 'overflow-hidden' are applied directly in LoadingScreen.tsx */
+  }
+
+  .shimmer-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%; /* Start further left to ensure a full sweep */
+    width: 50%; /* Width of the shimmer highlight */
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(255, 255, 255, 0.25) 50%, /* Light mode shimmer: subtle white */
+      transparent 100%
+    );
+    transform: skewX(-25deg); /* Gives the shimmer an angled look */
+    animation: shimmer 2s infinite linear;
+    z-index: 1; /* Ensure shimmer is above the image if needed, though usually not required for ::before */
+  }
+
+  .dark .shimmer-container::before {
+     background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(255, 255, 255, 0.15) 50%, /* Dark mode shimmer: even more subtle white */
+      transparent 100%
+    );
+  }
+
+  @keyframes shimmer {
+    0% {
+      left: -150%; /* Start off-screen to the left */
+    }
+    100% {
+      left: 150%; /* End off-screen to the right, ensuring a full sweep */
+    }
+  }
 }
