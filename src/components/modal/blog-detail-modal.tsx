@@ -2,9 +2,9 @@
 "use client";
 
 import Image from 'next/image';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"; // DialogClose removed
 import type { BlogPostFull } from '@/data/content';
-import { CalendarDays, UserCircle, X } from 'lucide-react';
+import { CalendarDays, UserCircle } from 'lucide-react'; // X icon removed
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface BlogDetailModalProps {
@@ -33,18 +33,10 @@ export function BlogDetailModal({ post, isOpen, onClose }: BlogDetailModalProps)
               By {post.author}
             </span>
           </div>
-          <DialogClose asChild>
-            <button 
-              onClick={onClose}
-              className="absolute right-3 top-3 sm:right-4 sm:top-4 rounded-full p-1.5 text-muted-foreground hover:bg-muted/80 transition-colors"
-              aria-label="Close blog post modal"
-            >
-              <X size={20} />
-            </button>
-          </DialogClose>
+          {/* The default DialogContent close button will be used. Removed custom button. */}
         </DialogHeader>
         
-        <ScrollArea className="flex-grow">
+        <ScrollArea className="flex-grow"> {/* Added ScrollArea */}
           <article className="p-4 sm:p-6 md:p-8">
             <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 mb-6 sm:mb-8 rounded-lg overflow-hidden shadow-md">
               <Image
