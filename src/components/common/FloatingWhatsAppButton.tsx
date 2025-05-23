@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useRef, useEffect, type FormEvent } from 'react';
-import { MessageCircle, SendHorizonal, X, Bot, User, Loader2, Phone } from 'lucide-react';
+import { MessageCircle, SendHorizonal, X, User, Loader2, Phone } from 'lucide-react'; // Removed Bot icon
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,6 +15,22 @@ interface ChatMessage {
   sender: 'user' | 'ai';
   text: string;
 }
+
+// Custom Terra Logo SVG Component
+const TerraLogo = ({ className }: { className?: string }) => (
+  <svg
+    className={cn("h-5 w-5", className)} // Default size, can be overridden by className
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M12 3v18M4 3h16" />
+  </svg>
+);
+
 
 export function FloatingWhatsAppButton() {
   const [isOpen, setIsOpen] = useState(false);
@@ -101,7 +117,7 @@ export function FloatingWhatsAppButton() {
           <Card className="h-[70vh] max-h-[500px] shadow-2xl rounded-xl flex flex-col bg-background/80 dark:bg-neutral-900/80 backdrop-blur-lg border-border">
             <CardHeader className="flex flex-row items-center justify-between p-4 border-b">
               <CardTitle className="text-lg font-semibold text-primary flex items-center">
-                <Bot size={20} className="mr-2 text-primary" /> Chat with Terra
+                <TerraLogo className="mr-2 text-primary h-5 w-5" /> Chat with Terra
               </CardTitle>
               <Button variant="ghost" size="icon" onClick={toggleOpen} className="text-muted-foreground hover:text-foreground">
                 <X size={20} />
@@ -119,7 +135,7 @@ export function FloatingWhatsAppButton() {
                       msg.sender === 'user' ? 'ml-auto flex-row-reverse' : 'mr-auto'
                     )}
                   >
-                    {msg.sender === 'ai' && <Bot size={20} className="text-primary flex-shrink-0 mb-1" />}
+                    {msg.sender === 'ai' && <TerraLogo className="text-primary flex-shrink-0 mb-1 h-5 w-5" />}
                     {msg.sender === 'user' && <User size={20} className="text-accent flex-shrink-0 mb-1" />}
                     <div
                       className={cn(
@@ -135,7 +151,7 @@ export function FloatingWhatsAppButton() {
                 ))}
                 {isLoadingAI && (
                   <div className="flex items-center gap-2 mr-auto max-w-[85%]">
-                     <Bot size={20} className="text-primary flex-shrink-0 mb-1" />
+                     <TerraLogo className="text-primary flex-shrink-0 mb-1 h-5 w-5" />
                      <div className="p-2.5 rounded-lg shadow bg-card text-card-foreground rounded-bl-none">
                       <Loader2 size={18} className="animate-spin text-muted-foreground" />
                      </div>
