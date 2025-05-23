@@ -2,7 +2,7 @@
 "use client"; 
 
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Gmarket_Sans } from 'next/font/google'; 
 import './globals.css';
 import { Navbar } from '../components/layout/navbar';
 import { Footer } from '../components/layout/footer';
@@ -10,14 +10,11 @@ import { Toaster } from '../components/ui/toaster';
 import { useState, useEffect } from 'react';
 import { LoadingScreen } from '../components/common/LoadingScreen';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+// Instantiate Gmarket Sans font with simplified options
+const gmarketSans = Gmarket_Sans({
+  variable: '--font-gmarket-sans', 
+  subsets: ['latin'],    // Simplified to one subset
+  weight: ['500'],   // Simplified to one weight
 });
 
 // Static metadata for a "use client" RootLayout needs careful handling.
@@ -57,7 +54,8 @@ export default function RootLayout({
         <meta name="description" content="Premium Indonesian coffee producer and wholesaler for export." />
          {/* Add other global head elements here if needed, like favicons if not handled by Next.js automatically */}
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans`}>
+      {/* Apply the Gmarket Sans font variable to the body */}
+      <body className={`${gmarketSans.variable} antialiased`}>
         {isLoading ? (
           <LoadingScreen />
         ) : (
