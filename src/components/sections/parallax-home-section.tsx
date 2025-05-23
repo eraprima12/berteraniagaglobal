@@ -23,15 +23,9 @@ export function ParallaxHomeSection() {
       <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-sm z-10"></div>
       
       <div className="relative z-20 p-4 max-w-3xl">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-8 leading-tight" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }}>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-8 leading-tight" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.6)' }}>
           A sip from nusantara soil, to your soul
         </h1>
-        {/* Optional: A smaller subtitle could go here if needed, or remove the <p> tag entirely */}
-        {/* 
-        <p className="text-lg sm:text-xl md:text-2xl font-light mb-8" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.7)' }}>
-          Discover Bertera Niaga Global
-        </p> 
-        */}
         <Button 
           size="lg" 
           variant="default" 
