@@ -2,14 +2,7 @@
 "use client";
 
 import { Button } from '../ui/button';
-import { Alex_Brush as AlexBrushFont } from 'next/font/google';
-
-// Configure the Alex Brush font without the 'variable' option
-const alexBrush = AlexBrushFont({
-  subsets: ['latin'],
-  weight: ['400'],
-  // No 'variable' option, so alexBrush.className directly applies the font
-});
+// Removed Alex_Brush font import as it's no longer used for the main headline
 
 export function ParallaxHomeSection() {
   const handleScrollToProducts = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -32,21 +25,25 @@ export function ParallaxHomeSection() {
 
       <div className="relative z-20 p-4 max-w-4xl">
         <h1
-          className={`${alexBrush.className} font-bold text-7xl sm:text-8xl md:text-9xl mb-10 leading-tight`}
+          className={`font-bold text-6xl sm:text-7xl md:text-8xl mb-6 leading-tight`} // Reverted font size, removed specific font class
           style={{
-            fontFamily: "'Alex Brush', cursive !important", 
             textShadow: '1px 1px 3px rgba(0,0,0,0.4)'
           }}
         >
-          A sip from nusantara soil, to your soul
+          Bertera Niaga Global
         </h1>
+        <p className="text-xl sm:text-2xl md:text-3xl mb-10 text-white/90"
+           style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}
+        >
+          Beyond Border, Beyond Expectations
+        </p>
         <Button
-          size="lg" 
-          variant="default" 
-          className="bg-accent text-accent-foreground px-10 py-4 text-xl rounded-lg shadow-xl 
-                     transition-all duration-300 ease-in-out 
-                     transform hover:scale-105 hover:shadow-2xl 
-                     filter hover:brightness-110" 
+          size="lg"
+          variant="default"
+          className="bg-accent text-accent-foreground px-10 py-4 text-xl rounded-lg shadow-xl
+                     transition-all duration-300 ease-in-out
+                     transform hover:scale-105 hover:shadow-2xl
+                     filter hover:brightness-110" // Maintained button aesthetics
           onClick={handleScrollToProducts}
           aria-label="Explore Our Coffees"
         >
