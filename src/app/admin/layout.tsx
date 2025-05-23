@@ -4,13 +4,13 @@ import { Inter } from 'next/font/google';
 import '../globals.css'; // Main global styles
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Home, PackagePlus, LogOut, Briefcase } from 'lucide-react';
+import { Home, PackagePlus, LogOut } from 'lucide-react'; // Removed Briefcase as it's not used
 import { logoutAction } from './actions';
 import Image from 'next/image';
 
 const inter = Inter({ 
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-inter', // Added variable configuration
 });
 
 export const metadata: Metadata = {
