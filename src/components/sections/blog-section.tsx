@@ -2,10 +2,10 @@
 "use client";
 
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from 'next/link'; // Keep Link for fallback or direct navigation if modal fails or for "View All"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { getAllBlogPostPreviews, type BlogPostPreview } from '@/data/content';
+import { getAllBlogPostPreviews, getBlogPostBySlug, type BlogPostPreview, type BlogPostFull } from '@/data/content';
 import { CalendarDays, UserCircle, ArrowRight } from 'lucide-react';
 import {
   Carousel,
@@ -17,12 +17,16 @@ import {
 } from "@/components/ui/carousel";
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
+import { BlogDetailModal } from '../modal/blog-detail-modal';
 
 export function BlogSection() {
   const posts = getAllBlogPostPreviews();
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0); // 1-indexed for display logic
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  const [selectedPost, setSelectedPost] = useState<BlogPostFull | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onDotButtonClick = useCallback((index: number) => {
     api?.scrollTo(index);
@@ -54,6 +58,22 @@ export function BlogSection() {
     };
   }, [api]);
 
+  const handleOpenBlogModal = (slug: string) => {
+    const post = getBlogPostBySlug(slug);
+    if (post) {
+      setSelectedPost(post);
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleCloseBlogModal = () => {
+    setIsModalOpen(false);
+    // Delay clearing selectedPost to allow for modal close animation
+    setTimeout(() => {
+      setSelectedPost(null);
+    }, 300); 
+  };
+
   if (!posts || posts.length === 0) {
     return null; 
   }
@@ -81,27 +101,27 @@ export function BlogSection() {
               <CarouselItem key={post.id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                 <div className="p-1 h-full">
                   <article className="h-full">
-                    <Card className="h-full flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-card">
-                      <Link href={`/blog/${post.slug}`} passHref legacyBehavior>
-                        <a className="block">
-                          <div className="relative w-full h-56">
-                            <Image
-                              src={post.imageUrl}
-                              alt={`Blog post image for ${post.title}`}
-                              layout="fill"
-                              objectFit="cover"
-                              data-ai-hint={post.imageHint}
-                              className="transition-transform duration-300 group-hover:scale-105"
-                            />
-                          </div>
-                        </a>
-                      </Link>
+                    <Card 
+                      className="h-full flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-card cursor-pointer group"
+                      onClick={() => handleOpenBlogModal(post.slug)}
+                    >
+                      <div className="relative w-full h-56 overflow-hidden">
+                        <Image
+                          src={post.imageUrl}
+                          alt={`Blog post image for ${post.title}`}
+                          layout="fill"
+                          objectFit="cover"
+                          data-ai-hint={post.imageHint}
+                          className="transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
                       <CardHeader>
-                        <Link href={`/blog/${post.slug}`} passHref legacyBehavior>
-                          <a>
-                            <CardTitle className="text-xl lg:text-2xl text-primary hover:underline line-clamp-2">{post.title}</CardTitle>
-                          </a>
-                        </Link>
+                        <CardTitle 
+                            className="text-xl lg:text-2xl text-primary group-hover:underline line-clamp-2"
+                            onClick={(e) => { e.stopPropagation(); handleOpenBlogModal(post.slug);}} // Allow clicking title too
+                        >
+                            {post.title}
+                        </CardTitle>
                         <div className="flex items-center gap-4 text-xs text-muted-foreground mt-2">
                           <span className="flex items-center gap-1.5">
                             <CalendarDays size={14} />
@@ -117,11 +137,14 @@ export function BlogSection() {
                         <CardDescription className="line-clamp-3">{post.excerpt}</CardDescription>
                       </CardContent>
                       <CardFooter>
-                        <Link href={`/blog/${post.slug}`} passHref legacyBehavior>
-                          <Button variant="link" className="p-0 text-accent hover:text-accent/80">
-                            Read More <ArrowRight size={16} className="ml-1" />
-                          </Button>
-                        </Link>
+                        <Button 
+                          variant="link" 
+                          className="p-0 text-accent hover:text-accent/80"
+                          onClick={(e) => { e.stopPropagation(); handleOpenBlogModal(post.slug);}}
+                          aria-label={`Read more about ${post.title}`}
+                        >
+                          Read More <ArrowRight size={16} className="ml-1" />
+                        </Button>
                       </CardFooter>
                     </Card>
                   </article>
@@ -155,10 +178,9 @@ export function BlogSection() {
           </div>
         )}
         
-        {posts.length > 3 && ( // This button might need rethinking in a carousel context if all posts are shown
+        {posts.length > 3 && ( 
            <div className="text-center mt-8">
-            {/* This could link to a dedicated blog listing page if you create one, e.g., /blog */}
-            {/* For now, it's a placeholder or could be removed if not needed with a carousel */}
+            {/* This link remains, pointing to a potential dedicated blog listing page */}
             <Link href="/blog" passHref legacyBehavior> 
                 <Button size="lg" variant="outline" className="bg-primary text-primary-foreground hover:bg-primary/90">
                     View All Posts
@@ -167,6 +189,13 @@ export function BlogSection() {
            </div>
         )}
       </div>
+      {selectedPost && (
+        <BlogDetailModal
+          post={selectedPost}
+          isOpen={isModalOpen}
+          onClose={handleCloseBlogModal}
+        />
+      )}
     </section>
   );
 }
