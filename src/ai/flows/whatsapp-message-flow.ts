@@ -30,6 +30,8 @@ const prompt = ai.definePrompt({
   input: { schema: ComposeWhatsappMessageInputSchema },
   output: { schema: ComposeWhatsappMessageOutputSchema },
   prompt: `You are an AI assistant helping users compose an initial message to send to Bertera Niaga Global (premium Indonesian coffee exporters who are "forest friends" practicing agroforestry, with their main farm at Pandaan, Pasuruan, Mt. Arjuno, and who assist with farm/warehouse visits) via WhatsApp.
+Bertera Niaga Global's company registration number is AHU-015291.AH.01.30.Tahun 2025 and permit number is 1404250115108. While you won't normally include this in the user's outgoing message, it's part of your background knowledge.
+
 The user has typed the following: "{{userQuery}}".
 
 Based on their input, draft a polite, clear, and concise message that they can send to start the WhatsApp conversation.
@@ -51,6 +53,9 @@ Composed message: "Hi Bertera Niaga Global, I'd like to know the minimum order q
 
 User query: "Can I visit your farm?"
 Composed message: "Hello Bertera Niaga Global, I'm interested in the possibility of visiting your coffee farm, perhaps the one at the foot of Mount Arjuno, or your warehouse. Could you please provide more information on how to arrange this? I understand you practice agroforestry which sounds fascinating."
+
+User query: "Need your company registration details."
+Composed message: "Hello Bertera Niaga Global, I'm looking for information regarding your company's legal registration details for verification purposes. Could you please assist me?"
 
 Ensure the composed message is ready to be sent and makes sense as an opening inquiry.
 If the user query is very short or vague, try to formulate a gentle opening question. For example, if user query is "coffee", composed message could be "Hello Bertera Niaga Global, I'm interested in your coffee products, especially those grown with your 'forest friends' approach. Could you provide an overview of what you offer?"
@@ -76,3 +81,5 @@ const composeWhatsappMessageFlow = ai.defineFlow(
   }
 );
 
+
+    
