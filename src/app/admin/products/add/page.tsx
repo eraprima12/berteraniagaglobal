@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { addProductAction, type AddProductFormState } from '../actions';
+import { addProductAction, type AddProductFormState } from '../../actions'; // Adjusted path
 import { coffeeData, type CoffeeType } from '@/data/content'; // For populating coffee types
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -47,11 +47,18 @@ export default function AddProductPage() {
       } else if (state.errors) {
         // Concatenate all error messages for a brief overview
         const errorSummary = Object.values(state.errors)
+          .filter(fieldErrors => fieldErrors !== undefined) // Ensure fieldErrors is not undefined
           .flat()
           .join(' ');
         toast({
           title: 'Error Adding Product',
           description: state.message || errorSummary || 'Please correct the errors below.',
+          variant: 'destructive',
+        });
+      } else if (!state.success && state.message) { // Handle general error messages not tied to specific fields
+        toast({
+          title: 'Error',
+          description: state.message,
           variant: 'destructive',
         });
       }
@@ -126,7 +133,9 @@ export default function AddProductPage() {
               Mark as Best Seller
             </Label>
           </div>
-          {state.errors?.isBestSeller && <p className="text-xs text-destructive mt-1">{state.errors.isBestSeller.join(', ')}</p>}
+          {state.errors?.isBestSeller && state.errors.isBestSeller.length > 0 && (
+            <p className="text-xs text-destructive mt-1">{state.errors.isBestSeller[0]}</p>
+          )}
           
           <SubmitButton />
         </form>
