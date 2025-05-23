@@ -4,9 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getProductDetails, ProductDetails } from '../../../data/content';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader } from '../../../components/ui/card'; // Removed CardTitle
 import { Button } from '../../../components/ui/button';
-import { Badge } from '../../../components/ui/badge'; // Added import for Badge
+import { Badge } from '../../../components/ui/badge';
 import { ChevronLeft, Tag, Layers, Coffee } from 'lucide-react';
 
 type ProductPageProps = {
@@ -97,7 +97,8 @@ export default function ProductPage({ params }: ProductPageProps) {
                     Best Seller
                   </Badge>
                 )}
-                <CardTitle className="text-3xl md:text-4xl font-bold text-primary mb-2">{product.name}</CardTitle>
+                {/* Changed CardTitle to h1 for better SEO */}
+                <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">{product.name}</h1>
                 <div className="flex flex-wrap gap-2 mb-4">
                     <span className="text-sm bg-secondary text-secondary-foreground px-3 py-1 rounded-full flex items-center">
                         <Coffee size={16} className="mr-1.5" />
