@@ -2,7 +2,8 @@
 "use client";
 
 import Link from 'next/link';
-import { Coffee, Menu } from 'lucide-react';
+import Image from 'next/image'; // Added import for Image component
+import { Menu } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
 import { useState, useEffect } from 'react';
@@ -55,8 +56,15 @@ export function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md shadow-md">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="#home" className="flex items-center gap-2" onClick={(e) => handleLinkClick(e, '#home')}>
-          <Coffee className="h-8 w-8 text-primary" />
-          <span className="text-xl font-bold text-primary">Bertera Global</span>
+          {/* Replaced Coffee icon and text with Image component for the logo */}
+          <Image
+            src="/bertera-logo.png"
+            alt="Bertera Niaga Logo"
+            width={400} // Assumed intrinsic width of the cropped logo
+            height={90} // Assumed intrinsic height of the cropped logo
+            className="h-9 w-auto" // Display height of 36px, width will scale automatically
+            priority
+          />
         </Link>
 
         {/* Desktop Navigation */}
