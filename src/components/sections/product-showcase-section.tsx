@@ -1,25 +1,22 @@
 
 "use client";
 import Image from 'next/image';
+import Link from 'next/link'; // Added Link for navigation
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { coffeeData, CoffeeType, CoffeeOrigin } from '../../data/content';
+import { coffeeData, CoffeeType, CoffeeOrigin, getAllCoffeeOrigins, ProductDetails as ProductOriginDisplay } from '../../data/content';
 import { Package, Search as SearchIcon, PackageSearch, Bean } from 'lucide-react';
 
 const ALL_PRODUCTS_CATEGORY_ID = 'all-products';
-
-interface ProductOriginDisplay extends CoffeeOrigin {
-  coffeeTypeName?: string;
-}
 
 interface CategoryDefinition {
   id: string;
   name: string;
   description: string;
   icon: React.ElementType;
-  origins?: CoffeeOrigin[]; // For coffee types
+  origins?: CoffeeOrigin[];
 }
 
 
@@ -29,9 +26,9 @@ export function ProductShowcaseSection() {
 
   const categoryDefinitions: CategoryDefinition[] = [
     { id: ALL_PRODUCTS_CATEGORY_ID, name: 'All Products', description: 'Browse all our available coffee varieties.', icon: PackageSearch },
-    ...coffeeData.map(type => ({ ...type, icon: Bean })),
+    ...coffeeData.map(type => ({ ...type, icon: Bean, id: type.id, name: type.name, description: type.description, origins: type.origins })),
   ];
-
+  
   const [activeCategory, setActiveCategory] = useState(categoryDefinitions[0]?.id || ALL_PRODUCTS_CATEGORY_ID);
 
   useEffect(() => {
@@ -40,7 +37,7 @@ export function ProductShowcaseSection() {
 
   const handleCategoryChange = (categoryId: string) => {
     setActiveCategory(categoryId);
-    setSearchTerm(''); // Clear search term when changing categories
+    setSearchTerm(''); 
   };
 
   const formatPrice = (price: number, priceUnit: string) => {
@@ -53,41 +50,40 @@ export function ProductShowcaseSection() {
     try {
       return `${new Intl.NumberFormat(undefined, { style: 'currency', currency: currencyCode, minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(price)}${unit ? ` ${unit}` : ''}`;
     } catch (e) {
+      // Fallback for invalid currency codes or environments
       return `${currencyCode} ${price.toFixed(2)}${unit ? ` ${unit}` : ''}`;
     }
   };
-
-  const allCoffeeOrigins: ProductOriginDisplay[] = coffeeData.flatMap(type =>
-    type.origins.map(origin => ({
-      ...origin,
-      coffeeTypeName: type.name,
-    }))
-  );
+  
+  const allProductsList = getAllCoffeeOrigins();
 
   const getFilteredProducts = (): ProductOriginDisplay[] => {
-    const selectedCategory = categoryDefinitions.find(cat => cat.id === activeCategory);
-    
     let sourceProducts: ProductOriginDisplay[];
-    if (activeCategory === ALL_PRODUCTS_CATEGORY_ID) {
-      sourceProducts = allCoffeeOrigins;
-    } else if (selectedCategory && selectedCategory.origins) {
-      sourceProducts = (selectedCategory as CoffeeType).origins;
-    } else {
-       sourceProducts = [];
-    }
 
+    if (activeCategory === ALL_PRODUCTS_CATEGORY_ID) {
+      sourceProducts = allProductsList;
+    } else {
+      const selectedCoffeeType = coffeeData.find(type => type.id === activeCategory);
+      sourceProducts = selectedCoffeeType 
+        ? selectedCoffeeType.origins.map(origin => ({
+            ...origin,
+            coffeeTypeName: selectedCoffeeType.name,
+            coffeeTypeDescription: selectedCoffeeType.description,
+          }))
+        : [];
+    }
 
     if (searchTerm === '') {
       return sourceProducts;
     }
 
-    return sourceProducts.filter(origin =>
-      origin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      origin.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (activeCategory === ALL_PRODUCTS_CATEGORY_ID && origin.coffeeTypeName && origin.coffeeTypeName.toLowerCase().includes(searchTerm.toLowerCase()))
+    return sourceProducts.filter(product =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (product.coffeeTypeName && product.coffeeTypeName.toLowerCase().includes(searchTerm.toLowerCase()))
     );
   };
-
+  
   const filteredProducts = getFilteredProducts();
   const currentCategoryInfo = categoryDefinitions.find(cat => cat.id === activeCategory);
 
@@ -102,7 +98,6 @@ export function ProductShowcaseSection() {
         </div>
 
         <div className="flex flex-col md:flex-row gap-8">
-          {/* Left Sidebar: Categories */}
           <aside className="md:w-1/4 lg:w-1/5 space-y-4">
             <h3 className="text-xl font-semibold text-primary px-2">Categories</h3>
             <div className="flex flex-col space-y-1">
@@ -120,7 +115,6 @@ export function ProductShowcaseSection() {
             </div>
           </aside>
 
-          {/* Right Content: Search and Products */}
           <main className="md:w-3/4 lg:w-4/5 space-y-6">
             <div className="relative">
               <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -146,40 +140,42 @@ export function ProductShowcaseSection() {
               
             {filteredProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProducts.map((origin: ProductOriginDisplay) => (
-                  <Card key={origin.id + (origin.coffeeTypeName || '')} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col bg-background">
-                    <div className="relative w-full h-56">
-                      <Image
-                        src={origin.imageUrl}
-                        alt={`Image of ${origin.name}${activeCategory === ALL_PRODUCTS_CATEGORY_ID && origin.coffeeTypeName ? ` (${origin.coffeeTypeName})` : ''} coffee`}
-                        layout="fill"
-                        objectFit="cover"
-                        data-ai-hint={origin.imageHint}
-                      />
-                    </div>
-                    <CardHeader>
-                      <CardTitle className="text-xl text-primary flex items-center gap-2">
-                        <Package size={24} /> 
-                        {origin.name}
-                        {activeCategory === ALL_PRODUCTS_CATEGORY_ID && origin.coffeeTypeName && (
-                          <span className="text-xs text-muted-foreground ml-1 whitespace-nowrap">({origin.coffeeTypeName})</span>
+                {filteredProducts.map((product: ProductOriginDisplay) => (
+                  <Link key={product.id} href={`/products/${product.id}`} passHref>
+                    <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col bg-background h-full">
+                      <div className="relative w-full h-56">
+                        <Image
+                          src={product.imageUrl}
+                          alt={`Image of ${product.name}${product.coffeeTypeName ? ` (${product.coffeeTypeName})` : ''} coffee`}
+                          layout="fill"
+                          objectFit="cover"
+                          data-ai-hint={product.imageHint}
+                        />
+                      </div>
+                      <CardHeader>
+                        <CardTitle className="text-xl text-primary flex items-center gap-2">
+                          <Package size={24} /> 
+                          {product.name}
+                           {activeCategory === ALL_PRODUCTS_CATEGORY_ID && product.coffeeTypeName && (
+                            <span className="text-xs text-muted-foreground ml-1 whitespace-nowrap">({product.coffeeTypeName})</span>
+                          )}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="flex-grow flex flex-col justify-between">
+                        <CardDescription className="text-sm line-clamp-3">{product.description}</CardDescription>
+                        {hydrated && (
+                           <p className="text-lg font-semibold text-accent mt-4">
+                            {formatPrice(product.price, product.priceUnit)}
+                          </p>
                         )}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex-grow flex flex-col justify-between">
-                      <CardDescription className="text-sm">{origin.description}</CardDescription>
-                      {hydrated && (
-                         <p className="text-lg font-semibold text-accent mt-4">
-                          {formatPrice(origin.price, origin.priceUnit)}
-                        </p>
-                      )}
-                      {!hydrated && (
-                         <p className="text-lg font-semibold text-accent mt-4 animate-pulse">
-                           Loading price...
-                         </p>
-                      )}
-                    </CardContent>
-                  </Card>
+                        {!hydrated && (
+                           <p className="text-lg font-semibold text-accent mt-4 animate-pulse">
+                             Loading price...
+                           </p>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Link>
                 ))}
               </div>
             ) : (
@@ -195,4 +191,3 @@ export function ProductShowcaseSection() {
     </section>
   );
 }
-
