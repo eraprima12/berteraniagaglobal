@@ -2,13 +2,13 @@
 "use client";
 
 import { Button } from '../ui/button';
-import { Alex_Brush as AlexBrushFont } from 'next/font/google'; // Changed to Alex_Brush
+import { Alex_Brush as AlexBrushFont } from 'next/font/google';
 
 // Configure the Alex Brush font
 const alexBrush = AlexBrushFont({
   subsets: ['latin'],
   weight: ['400'], // Alex Brush typically only has a 400 weight
-  variable: '--font-alex-brush', 
+  // Removed 'variable' option to apply font directly via className
 });
 
 export function ParallaxHomeSection() {
@@ -32,8 +32,8 @@ export function ParallaxHomeSection() {
       
       <div className="relative z-20 p-4 max-w-3xl">
         <h1 
-          className={`${alexBrush.className} text-6xl sm:text-7xl md:text-8xl mb-8 leading-tight`} // Applied Alex Brush font and adjusted sizes
-          style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }} // Adjusted shadow for Alex Brush
+          className={`${alexBrush.className} text-6xl sm:text-7xl md:text-8xl mb-8 leading-tight`} // Applied Alex Brush font
+          style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }} 
         >
           A sip from nusantara soil, to your soul
         </h1>
