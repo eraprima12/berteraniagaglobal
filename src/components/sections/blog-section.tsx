@@ -13,38 +13,44 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-  type CarouselApi, // Import CarouselApi type
+  type CarouselApi,
 } from "@/components/ui/carousel";
-import { useState, useEffect } from 'react'; // Import useState and useEffect
+import { useState, useEffect, useCallback } from 'react';
+import { cn } from '@/lib/utils';
 
 export function BlogSection() {
   const posts = getAllBlogPostPreviews();
   const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
+  const [current, setCurrent] = useState(0); // 1-indexed for display logic
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  const onDotButtonClick = useCallback((index: number) => {
+    api?.scrollTo(index);
+  }, [api]);
 
   useEffect(() => {
     if (!api) {
       return;
     }
 
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
-
     const onSelect = () => {
       setCurrent(api.selectedScrollSnap() + 1);
     };
 
+    const onInitOrReInit = () => {
+      setScrollSnaps(api.scrollSnapList());
+      setCurrent(api.selectedScrollSnap() + 1);
+    };
+
     api.on("select", onSelect);
-    api.on("reInit", () => { // Handle re-initialization if necessary
-        setCount(api.scrollSnapList().length);
-        setCurrent(api.selectedScrollSnap() + 1);
-    });
+    api.on("reInit", onInitOrReInit);
 
+    // Initial setup
+    onInitOrReInit();
 
-    // Cleanup
     return () => {
       api.off("select", onSelect);
+      api.off("reInit", onInitOrReInit);
     };
   }, [api]);
 
@@ -63,12 +69,12 @@ export function BlogSection() {
         </div>
 
         <Carousel
-          setApi={setApi} // Pass setApi to the Carousel
+          setApi={setApi}
           opts={{
             align: "start",
-            loop: posts.length > 1, // Loop only if there's more than one post
+            loop: posts.length > 1,
           }}
-          className="w-full max-w-xs sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl mx-auto" // Adjusted max-width for better responsiveness
+          className="w-full max-w-xs sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl mx-auto"
         >
           <CarouselContent className="-ml-2 md:-ml-4">
             {posts.map((post) => (
@@ -123,7 +129,7 @@ export function BlogSection() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          {posts.length > 1 && ( // Show arrows only if there's more than one post
+          {posts.length > 1 && (
             <>
               <CarouselPrevious className="hidden sm:flex" /> 
               <CarouselNext className="hidden sm:flex" />
@@ -131,15 +137,29 @@ export function BlogSection() {
           )}
         </Carousel>
         
-        {count > 0 && posts.length > 1 && ( // Show indicator if there's more than one post
-          <div className="text-center py-2 text-sm text-muted-foreground mt-4">
-            {current} / {count}
+        {scrollSnaps.length > 1 && (
+          <div className="flex justify-center items-center space-x-2 pt-6">
+            {scrollSnaps.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => onDotButtonClick(index)}
+                className={cn(
+                  "h-2.5 w-2.5 rounded-full transition-all duration-300 ease-in-out",
+                  index === current - 1 // current is 1-indexed
+                    ? "bg-primary scale-125 ring-2 ring-primary/70 ring-offset-2 ring-offset-background" 
+                    : "bg-muted hover:bg-primary/60"
+                )}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
           </div>
         )}
         
         {posts.length > 3 && ( // This button might need rethinking in a carousel context if all posts are shown
            <div className="text-center mt-8">
-            <Link href="/blog" passHref legacyBehavior>
+            {/* This could link to a dedicated blog listing page if you create one, e.g., /blog */}
+            {/* For now, it's a placeholder or could be removed if not needed with a carousel */}
+            <Link href="/blog" passHref legacyBehavior> 
                 <Button size="lg" variant="outline" className="bg-primary text-primary-foreground hover:bg-primary/90">
                     View All Posts
                 </Button>
