@@ -13,6 +13,7 @@ const navLinks = [
   { href: '/#home', label: 'Home', sectionId: 'home' },
   { href: '/#products', label: 'Products', sectionId: 'products' },
   { href: '/#our-story', label: 'Our Story', sectionId: 'our-story' },
+  { href: '/#why-us', label: 'Why Us', sectionId: 'why-us' }, // Added this link
   { href: '/#blog', label: 'Blog', sectionId: 'blog' },
   { href: '/#testimonials', label: 'Testimonials', sectionId: 'testimonials' },
   { href: '/#contact-us', label: 'Contact Us', sectionId: 'contact-us' },
@@ -146,5 +147,3 @@ export function Navbar() {
     </header>
   );
 }
-
-    
