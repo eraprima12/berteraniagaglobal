@@ -58,10 +58,10 @@ export function Navbar() {
         <Link href="#home" className="flex items-center gap-2" onClick={(e) => handleLinkClick(e, '#home')}>
           {/* Replaced Coffee icon and text with Image component for the logo */}
           <Image
-            src="/bertera-logo.png"
+            src="/images/logo/bertera-logo.png"
             alt="Bertera Niaga Logo"
-            width={400} // Assumed intrinsic width of the cropped logo
-            height={90} // Assumed intrinsic height of the cropped logo
+            width={1200} // Assumed intrinsic width of the cropped logo
+            height={200} // Assumed intrinsic height of the cropped logo
             className="h-9 w-auto" // Display height of 36px, width will scale automatically
             priority
           />

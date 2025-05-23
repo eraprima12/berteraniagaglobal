@@ -105,21 +105,21 @@ export function ContactUsSection() {
                   <MapPin className="w-6 h-6 text-accent mt-1 shrink-0" />
                   <div>
                     <h4 className="font-semibold text-primary">Address</h4>
-                    <p className="text-muted-foreground">Jl. Kopi Enak No. 123, Jakarta, Indonesia</p>
+                    <p className="text-muted-foreground">Jl. Karangpoh Indah 5/12, Surabaya, Indonesia</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
                   <Phone className="w-6 h-6 text-accent mt-1 shrink-0" />
                   <div>
                     <h4 className="font-semibold text-primary">Phone</h4>
-                    <p className="text-muted-foreground">+62 21 1234 5678</p>
+                    <p className="text-muted-foreground">+62 851 5611 3241</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
                   <Mail className="w-6 h-6 text-accent mt-1 shrink-0" />
                   <div>
                     <h4 className="font-semibold text-primary">Email</h4>
-                    <p className="text-muted-foreground">info@berteraglobal.com</p>
+                    <p className="text-muted-foreground">admin@berteraniagaglobal.com</p>
                   </div>
                 </div>
               </CardContent>
