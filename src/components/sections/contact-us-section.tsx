@@ -11,7 +11,7 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { MapPin, Phone, Mail, Loader2 } from 'lucide-react'; // Removed Pin, will use logo
+import { MapPin, Phone, Mail, Loader2 } from 'lucide-react';
 import { submitContactForm, type ContactFormState } from '../../app/actions';
 import { useToast } from "../../hooks/use-toast";
 
@@ -146,7 +146,7 @@ export function ContactUsSection() {
                       style={{width: '100%', height: '100%'}}
                       mapStyle="mapbox://styles/mapbox/streets-v12"
                     >
-                      <Marker longitude={companyLongitude} latitude={companyLatitude} anchor="bottom" >
+                      <Marker longitude={companyLongitude} latitude={companyLatitude} anchor="center" >
                         <div className="w-10 h-10 p-0.5 bg-background rounded-full shadow-md border-2 border-primary">
                           <Image
                             src="/images/logo/bertera-logo.png" 
