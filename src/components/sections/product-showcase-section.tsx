@@ -6,10 +6,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Badge } from '../ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"; // Added Select imports
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { coffeeData, CoffeeOrigin, getAllCoffeeOrigins, ProductDetails as ProductOriginDisplay, ProductDetails } from '../../data/content';
-import { Package, Search as SearchIcon, PackageSearch, Bean, ArrowDownUp } from 'lucide-react'; // Added ArrowDownUp for sort icon
+import { Package, Search as SearchIcon, PackageSearch, Bean, ArrowDownUp } from 'lucide-react';
 import { ProductDetailModal } from '../modal/product-detail-modal';
+import { cn } from '@/lib/utils';
 
 const ALL_PRODUCTS_CATEGORY_ID = 'all-products';
 
@@ -44,7 +45,7 @@ export function ProductShowcaseSection() {
   const handleCategoryChange = (categoryId: string) => {
     setActiveCategory(categoryId);
     setSearchTerm(''); 
-    setSortOrder("default"); // Reset sort order when category changes
+    setSortOrder("default");
   };
 
   const openProductModal = (product: ProductDetails) => {
@@ -96,8 +97,7 @@ export function ProductShowcaseSection() {
       );
     }
 
-    // Apply sorting
-    let sortedProducts = [...filtered]; // Create a new array to avoid mutating the original
+    let sortedProducts = [...filtered]; 
     switch (sortOrder) {
       case "price-asc":
         sortedProducts.sort((a, b) => a.price - b.price);
@@ -113,8 +113,6 @@ export function ProductShowcaseSection() {
         break;
       case "default":
       default:
-        // No specific sort, or maintain original order (if applicable)
-        // For now, it will be the order after filtering
         break;
     }
     return sortedProducts;
@@ -122,6 +120,9 @@ export function ProductShowcaseSection() {
   
   const filteredAndSortedProducts = getFilteredAndSortedProducts();
   const currentCategoryInfo = categoryDefinitions.find(cat => cat.id === activeCategory);
+
+  // Key for re-triggering animations on the product grid
+  const productGridKey = `${activeCategory}-${searchTerm}-${sortOrder}`;
 
   return (
     <section id="products" className="py-16 md:py-24 bg-card">
@@ -192,12 +193,16 @@ export function ProductShowcaseSection() {
             )}
               
             {filteredAndSortedProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredAndSortedProducts.map((product: ProductOriginDisplay) => (
+              <div key={productGridKey} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredAndSortedProducts.map((product: ProductOriginDisplay, index) => (
                   <Card 
                     key={product.id} 
                     onClick={() => openProductModal(product)}
-                    className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col bg-background h-full cursor-pointer relative"
+                    className={cn(
+                        "product-card-animate-in", // Animation class
+                        "overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col bg-background h-full cursor-pointer relative"
+                    )}
+                    style={{ animationDelay: `${index * 30}ms` }} // Staggered animation
                   >
                     <div className="relative w-full h-56">
                       <Image

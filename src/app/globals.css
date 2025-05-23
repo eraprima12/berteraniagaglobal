@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -91,5 +92,23 @@
   body {
     @apply bg-background text-foreground;
     /* Remove default font-family to let Next/Font take over */
+  }
+}
+
+@layer utilities {
+  .product-card-animate-in {
+    opacity: 0; /* Initial state for animation */
+    animation: fadeInAndSlightUpProductCard 0.4s ease-out forwards;
+  }
+
+  @keyframes fadeInAndSlightUpProductCard {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
