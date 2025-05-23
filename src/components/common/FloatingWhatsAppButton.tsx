@@ -16,7 +16,7 @@ interface ChatMessage {
   text: string;
 }
 
-// Custom Terra Logo SVG Component - Earthy Sprout in Circle
+// Custom Terra Leaf Logo SVG Component
 const TerraLogo = ({ className }: { className?: string }) => (
   <svg
     className={cn("h-5 w-5", className)}
@@ -27,9 +27,8 @@ const TerraLogo = ({ className }: { className?: string }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/> {/* Circle for earth */}
-    <path d="M12 16V9"/> {/* Sprout stem */}
-    <path d="M10 11l2-2 2 2"/> {/* Sprout leaves (small upward V) */}
+    <path d="M11 20A7 7 0 0 1 4 13H2a10 10 0 0 0 10 10z"/>
+    <path d="M2 11h2a7 7 0 0 1 7-7V2a10 10 0 0 0-9 9z"/>
   </svg>
 );
 
