@@ -34,9 +34,9 @@ export function FloatingWhatsAppButton() {
   const toggleOpen = () => {
     setIsOpen(!isOpen);
     if (!isOpen && chatHistory.length === 0) {
-      // Add initial greeting from AI when chat opens for the first time
+      // Add initial greeting from AI (Terra) when chat opens for the first time
       setChatHistory([
-        { id: Date.now().toString(), sender: 'ai', text: "Hello! How can I help you with Bertera Niaga Global's coffee products today?" }
+        { id: Date.now().toString(), sender: 'ai', text: "Hello! I'm Terra, your AI assistant from Bertera Niaga Global. How can I help you with our 'forest friends' coffee today?" }
       ]);
     }
   };
@@ -92,7 +92,7 @@ export function FloatingWhatsAppButton() {
         <Card className="fixed bottom-6 right-6 w-80 sm:w-96 h-[70vh] max-h-[500px] z-50 shadow-2xl rounded-xl flex flex-col bg-background/80 dark:bg-neutral-900/80 backdrop-blur-lg border-border">
           <CardHeader className="flex flex-row items-center justify-between p-4 border-b">
             <CardTitle className="text-lg font-semibold text-primary flex items-center">
-              <Bot size={20} className="mr-2 text-primary" /> Chat with Us
+              <Bot size={20} className="mr-2 text-primary" /> Chat with Terra
             </CardTitle>
             <Button variant="ghost" size="icon" onClick={toggleOpen} className="text-muted-foreground hover:text-foreground">
               <X size={20} />
@@ -171,5 +171,3 @@ export function FloatingWhatsAppButton() {
     </>
   );
 }
-
-    
