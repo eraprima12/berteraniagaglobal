@@ -5,13 +5,14 @@ import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useEffect, useRef } from 'react';
 import Map, { Marker } from 'react-map-gl';
-import Image from 'next/image'; // Added for logo marker
+import Image from 'next/image'; 
+import Link from 'next/link'; // Added for social links
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { MapPin, Phone, Mail, Loader2 } from 'lucide-react';
+import { MapPin, Phone, Mail, Loader2, Linkedin, Instagram } from 'lucide-react'; // Added Linkedin, Instagram
 import { submitContactForm, type ContactFormState } from '../../app/actions';
 import { useToast } from "../../hooks/use-toast";
 
@@ -127,6 +128,24 @@ export function ContactUsSection() {
                     <p className="text-muted-foreground">admin@berteraniagaglobal.com</p>
                   </div>
                 </div>
+                <div className="flex items-start gap-4">
+                  <Linkedin className="w-6 h-6 text-accent mt-1 shrink-0" />
+                  <div>
+                    <h4 className="font-semibold text-primary">LinkedIn</h4>
+                    <Link href="https://www.linkedin.com/company/106691396/admin/dashboard/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors">
+                      Bertera Niaga Global
+                    </Link>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <Instagram className="w-6 h-6 text-accent mt-1 shrink-0" />
+                  <div>
+                    <h4 className="font-semibold text-primary">Instagram</h4>
+                    <Link href="https://www.instagram.com/berteraniaga/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors">
+                      @berteraniaga
+                    </Link>
+                  </div>
+                </div>
               </CardContent>
             </Card>
             
@@ -145,6 +164,7 @@ export function ContactUsSection() {
                       }}
                       style={{width: '100%', height: '100%'}}
                       mapStyle="mapbox://styles/mapbox/streets-v12"
+                      anchor="center"
                     >
                       <Marker longitude={companyLongitude} latitude={companyLatitude} anchor="center" >
                         <div className="w-10 h-10 p-0.5 bg-background rounded-full shadow-md border-2 border-primary">
