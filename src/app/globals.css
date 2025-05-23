@@ -124,24 +124,24 @@
     position: absolute;
     top: 0;
     left: -150%; /* Start further left to ensure a full sweep */
-    width: 50%; /* Width of the shimmer highlight */
+    width: 75%; /* Width of the shimmer highlight - Increased */
     height: 100%;
     background: linear-gradient(
       to right,
       transparent 0%,
-      rgba(255, 255, 255, 0.25) 50%, /* Light mode shimmer: subtle white */
+      rgba(255, 255, 255, 0.4) 50%, /* Light mode shimmer: more opaque */
       transparent 100%
     );
     transform: skewX(-25deg); /* Gives the shimmer an angled look */
-    animation: shimmer 2s infinite linear;
-    z-index: 1; /* Ensure shimmer is above the image if needed, though usually not required for ::before */
+    animation: shimmer 1.5s infinite linear; /* Faster animation */
+    z-index: 1; 
   }
 
   .dark .shimmer-container::before {
      background: linear-gradient(
       to right,
       transparent 0%,
-      rgba(255, 255, 255, 0.15) 50%, /* Dark mode shimmer: even more subtle white */
+      rgba(255, 255, 255, 0.3) 50%, /* Dark mode shimmer: more opaque */
       transparent 100%
     );
   }
