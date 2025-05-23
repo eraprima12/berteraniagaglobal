@@ -14,6 +14,7 @@ const navLinks = [
   { href: '/#products', label: 'Products', sectionId: 'products' },
   { href: '/#our-story', label: 'Our Story', sectionId: 'our-story' },
   { href: '/#blog', label: 'Blog', sectionId: 'blog' },
+  { href: '/#testimonials', label: 'Testimonials', sectionId: 'testimonials' },
   { href: '/#contact-us', label: 'Contact Us', sectionId: 'contact-us' },
 ];
 
@@ -145,3 +146,5 @@ export function Navbar() {
     </header>
   );
 }
+
+    

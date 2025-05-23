@@ -4,6 +4,7 @@ import { ParallaxHomeSection } from '../components/sections/parallax-home-sectio
 import { ProductShowcaseSection } from '../components/sections/product-showcase-section';
 import { OurStorySection } from '../components/sections/our-story-section';
 import { BlogSection } from '../components/sections/blog-section';
+import { ClientTestimonialsSection } from '../components/sections/client-testimonials-section';
 import { ContactUsSection } from '../components/sections/contact-us-section';
 import { AnimatedSection } from '../components/common/AnimatedSection';
 
@@ -48,8 +49,14 @@ export default function HomePage() {
       </AnimatedSection>
 
       <AnimatedSection delay="delay-100">
+        <ClientTestimonialsSection />
+      </AnimatedSection>
+
+      <AnimatedSection delay="delay-100">
         <ContactUsSection />
       </AnimatedSection>
     </div>
   );
 }
+
+    

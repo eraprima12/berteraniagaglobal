@@ -49,21 +49,6 @@ export const coffeeData: CoffeeType[] = [
   },
 ];
 
-export interface TeamMember {
-  id: string;
-  name: string;
-  title: string;
-  bio: string;
-  imageUrl: string;
-  imageHint: string;
-}
-
-export const teamMembers: TeamMember[] = [
-  { id: '1', name: 'Era Prima S', title: 'Founder & CEO', bio: 'Visionary leader with 10+ years in the coffee industry, passionate about quality and sustainability.', imageUrl: 'https://placehold.co/300x300.png', imageHint: 'professional headshot man' },
-  { id: '2', name: 'Bobby Ishak', title: 'CTO', bio: 'Ensures smooth operations from bean to cup, focusing on efficiency and excellence.', imageUrl: 'https://placehold.co/300x300.png', imageHint: 'professional headshot man' },
-  { id: '3', name: 'Gilbert Yoshua', title: 'CBO', bio: 'Connects Bertera Global with international markets, fostering strong partnerships.', imageUrl: 'https://placehold.co/300x300.png', imageHint: 'professional headshot person' },
-];
-
 export interface StoryEvent {
   id: string;
   year: string;
@@ -175,3 +160,50 @@ export function getAllBlogPostPreviews(): BlogPostPreview[] {
 export function getBlogPostBySlug(slug: string): BlogPostFull | undefined {
   return blogPostsData.find(post => post.slug === slug);
 }
+
+// Testimonial Data
+export interface Testimonial {
+  id: string;
+  clientName: string;
+  clientCompany?: string;
+  clientTitle?: string;
+  testimonialText: string;
+  clientImageUrl?: string;
+  clientImageHint?: string;
+}
+
+export const testimonialsData: Testimonial[] = [
+  {
+    id: '1',
+    clientName: 'Ahmad Mustain Marzuki',
+    clientCompany: 'torticoffee',
+    clientTitle: 'Owner',
+    testimonialText: "Bertera Niaga Global consistently delivers high-quality coffee beans. Their commitment to agroforestry and direct farmer relationships is commendable. Working with them has been a pleasure and has elevated the quality of coffee we offer to our customers.",
+    clientImageUrl: 'https://placehold.co/100x100.png',
+    clientImageHint: 'person headshot'
+  },
+  {
+    id: '2',
+    clientName: 'Siti Aminah',
+    clientCompany: 'Kopi Kita Roastery',
+    clientTitle: 'Head Roaster',
+    testimonialText: "The 'forest friends' approach of Bertera Niaga Global truly resonates with us. The quality of their Arabica, especially the Arjuno, is exceptional. Our customers love the unique flavors and the story behind the beans. Highly recommended!",
+    clientImageUrl: 'https://placehold.co/100x100.png',
+    clientImageHint: 'professional woman'
+  },
+  {
+    id: '3',
+    clientName: 'Budi Santoso',
+    clientCompany: 'Java Gold Coffee Importers',
+    clientTitle: 'Procurement Manager',
+    testimonialText: "We've been sourcing Robusta from Bertera Niaga Global for our espresso blends, and the consistency and quality are top-notch. Their team is professional, responsive, and their dedication to sustainable practices is a huge plus.",
+    clientImageUrl: 'https://placehold.co/100x100.png',
+    clientImageHint: 'smiling man'
+  },
+];
+
+export function getAllTestimonials(): Testimonial[] {
+  return testimonialsData;
+}
+
+    
