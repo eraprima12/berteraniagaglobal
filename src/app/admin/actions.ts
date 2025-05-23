@@ -5,6 +5,7 @@ import { z } from "zod";
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
+// --- Login/Logout ---
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
   password: z.string().min(1, { message: "Password is required." }),
@@ -19,8 +20,6 @@ export type LoginState = {
   } | null;
 };
 
-// IMPORTANT: These are hardcoded credentials for prototype purposes ONLY.
-// DO NOT use this in a production environment.
 const ADMIN_EMAIL = "admin@bertera.com";
 const ADMIN_PASSWORD = "password123";
 
@@ -44,32 +43,21 @@ export async function loginAction(
   const { email, password } = validatedFields.data;
 
   if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-    // Create a session cookie (very basic for prototype)
-    cookies().set('session', 'authenticated_user_token_example', {
+    cookies().set('session', 'authenticated_admin_token_example', {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Should be true in production
+      secure: process.env.NODE_ENV === 'production',
       maxAge: 60 * 60 * 24 * 7, // 1 week
-      path: '/', // Cookie available across the entire site
-      sameSite: 'lax', // Mitigates CSRF
+      path: '/',
+      sameSite: 'lax',
     });
-    // Store email for display (optional, consider security implications for real apps)
-     cookies().set('userEmail', encodeURIComponent(email), {
-      httpOnly: true, // Make it httpOnly if not needed by client JS
+    cookies().set('userEmail', encodeURIComponent(email), {
+      httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 60 * 60 * 24 * 7,
       path: '/',
       sameSite: 'lax',
     });
-
-
-    // On successful login, redirect to the admin dashboard
-    // Server Actions cannot use `redirect` directly in the action that's bound to a form.
-    // Instead, the page consuming the form state should handle redirection based on `state.success`.
-    // However, for simplicity in this prototype and since Next.js allows it now for many cases:
     redirect('/admin');
-    
-    // This part might not be reached if redirect works immediately
-    // return { message: 'Login successful!', success: true };
   } else {
     return {
       message: "Invalid email or password.",
@@ -82,4 +70,72 @@ export async function logoutAction() {
   cookies().delete('session');
   cookies().delete('userEmail');
   redirect('/admin/login');
+}
+
+// --- Add Product ---
+const addProductFormSchema = z.object({
+  name: z.string().min(3, { message: "Product name must be at least 3 characters." }),
+  description: z.string().min(10, { message: "Description must be at least 10 characters." }),
+  imageUrl: z.string().url({ message: "Please enter a valid image URL." }),
+  imageHint: z.string().min(2, { message: "Image hint must be at least 2 characters." }),
+  price: z.coerce.number().positive({ message: "Price must be a positive number." }),
+  priceUnit: z.string().min(3, { message: "Price unit is required (e.g., USD / kg)." }),
+  coffeeTypeId: z.enum(['arabica', 'robusta', 'liberica'], { message: "Please select a valid coffee type." }),
+  isBestSeller: z.preprocess((val) => val === 'on' || val === true, z.boolean().optional()),
+});
+
+export type AddProductFormState = {
+  message: string | null;
+  errors?: {
+    name?: string[];
+    description?: string[];
+    imageUrl?: string[];
+    imageHint?: string[];
+    price?: string[];
+    priceUnit?: string[];
+    coffeeTypeId?: string[];
+    isBestSeller?: string[];
+  } | null;
+  success: boolean;
+};
+
+export async function addProductAction(
+  prevState: AddProductFormState,
+  formData: FormData
+): Promise<AddProductFormState> {
+  const validatedFields = addProductFormSchema.safeParse({
+    name: formData.get("name"),
+    description: formData.get("description"),
+    imageUrl: formData.get("imageUrl"),
+    imageHint: formData.get("imageHint"),
+    price: formData.get("price"),
+    priceUnit: formData.get("priceUnit"),
+    coffeeTypeId: formData.get("coffeeTypeId"),
+    isBestSeller: formData.get("isBestSeller"),
+  });
+
+  if (!validatedFields.success) {
+    console.log("Validation errors:", validatedFields.error.flatten().fieldErrors);
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Validation failed. Please check the fields.",
+      success: false,
+    };
+  }
+
+  // PROTOTYPE NOTE: In a real application, you would save this data to a database.
+  // For now, we'll just log it to the console.
+  console.log("New Product Submitted (Prototype - Not Saved):", validatedFields.data);
+  
+  // Simulate a delay
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
+  // For a real app, you'd check for errors from the database save operation.
+  // Here, we assume success for the prototype.
+
+  return {
+    message: `Product "${validatedFields.data.name}" submitted successfully (logged to console, not saved live).`,
+    errors: null,
+    success: true,
+  };
 }
