@@ -7,6 +7,7 @@ export interface CoffeeOrigin {
   imageHint: string;
   price: number;
   priceUnit: string; // e.g., "USD / kg" or "IDR / kg"
+  isBestSeller?: boolean;
 }
 
 export interface CoffeeType {
@@ -25,7 +26,7 @@ export const coffeeData: CoffeeType[] = [
       { id: 'mandheling', name: 'Mandheling (Sumatra)', description: 'Rich, earthy, and full-bodied with low acidity and notes of chocolate and spice. Sourced from the highlands of Sumatra, Mandheling coffee is renowned for its smooth, heavy body and complex flavor profile. It often exhibits earthy notes, hints of dark chocolate, and a touch of spice, making it a favorite among those who appreciate a bold and satisfying cup.', imageUrl: 'https://placehold.co/400x300.png', imageHint: 'coffee beans sumatra', price: 15, priceUnit: 'USD / kg' },
       { id: 'gayo', name: 'Gayo (Aceh, Sumatra)', description: 'Smooth, clean cup with medium body, bright acidity, and complex fruity and floral notes. From the Gayo highlands in Aceh, this coffee is celebrated for its clean taste and vibrant acidity. It delights the palate with a balanced medium body and an intricate dance of fruity and floral aromas, offering a truly sophisticated coffee experience.', imageUrl: 'https://placehold.co/400x300.png', imageHint: 'coffee beans gayo', price: 18, priceUnit: 'USD / kg' },
       { id: 'toraja', name: 'Toraja (Sulawesi)', description: 'Deep, rich flavor with a full body, low acidity, and notes of dark chocolate and ripe fruit. Cultivated in the mountainous regions of Tana Toraja, Sulawesi, this coffee boasts a deep, rich flavor profile. Its full body and low acidity are complemented by distinct notes of dark chocolate and sweet ripe fruit, creating a luxurious and memorable brew.', imageUrl: 'https://placehold.co/400x300.png', imageHint: 'coffee beans toraja', price: 17, priceUnit: 'USD / kg' },
-      { id: 'arjuno', name: 'Arjuno (Java)', description: 'Classic Indonesian coffee with a heavy body, syrupy mouthfeel, and often spicy or nutty notes. Grown on the slopes of Mount Arjuno in Java, this coffee is a quintessential example of Indonesian excellence. It features a heavy body, a satisfyingly syrupy mouthfeel, and is often characterized by warm spicy or nutty undertones.', imageUrl: 'https://placehold.co/400x300.png', imageHint: 'coffee beans java', price: 16, priceUnit: 'USD / kg' },
+      { id: 'arjuno', name: 'Arjuno (Java)', description: 'Classic Indonesian coffee with a heavy body, syrupy mouthfeel, and often spicy or nutty notes. Grown on the slopes of Mount Arjuno in Java, this coffee is a quintessential example of Indonesian excellence. It features a heavy body, a satisfyingly syrupy mouthfeel, and is often characterized by warm spicy or nutty undertones.', imageUrl: 'https://placehold.co/400x300.png', imageHint: 'coffee beans java', price: 16, priceUnit: 'USD / kg', isBestSeller: true },
     ],
   },
   {

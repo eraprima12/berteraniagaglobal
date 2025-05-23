@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import { getProductDetails, ProductDetails } from '../../../data/content';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
 import { Button } from '../../../components/ui/button';
+import { Badge } from '../../../components/ui/badge'; // Added import for Badge
 import { ChevronLeft, Tag, Layers, Coffee } from 'lucide-react';
 
 type ProductPageProps = {
@@ -83,9 +84,19 @@ export default function ProductPage({ params }: ProductPageProps) {
                 data-ai-hint={product.imageHint}
                 priority
               />
+               {product.isBestSeller && (
+                <Badge variant="default" className="absolute top-4 right-4 z-10 bg-accent text-accent-foreground shadow-md">
+                  Best Seller
+                </Badge>
+              )}
             </div>
             <div className="flex flex-col justify-between">
               <CardHeader className="p-6 md:p-8">
+                {product.isBestSeller && (
+                  <Badge variant="default" className="mb-2 w-fit bg-accent text-accent-foreground shadow-md">
+                    Best Seller
+                  </Badge>
+                )}
                 <CardTitle className="text-3xl md:text-4xl font-bold text-primary mb-2">{product.name}</CardTitle>
                 <div className="flex flex-wrap gap-2 mb-4">
                     <span className="text-sm bg-secondary text-secondary-foreground px-3 py-1 rounded-full flex items-center">

@@ -1,9 +1,10 @@
 
 "use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"; // Removed DialogClose
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge"; // Added import for Badge
 import type { ProductDetails } from "@/data/content";
 import { X, Tag, Layers, Coffee } from "lucide-react";
 
@@ -43,10 +44,13 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogContent className="sm:max-w-3xl md:max-w-4xl lg:max-w-5xl w-[95vw] p-0 bg-background/80 dark:bg-neutral-900/80 backdrop-blur-xl shadow-2xl rounded-2xl border-none overflow-hidden max-h-[90vh] flex flex-col">
-        {/* The DialogContent component from ShadCN UI provides its own close button by default */}
         <DialogHeader className="p-4 sm:p-6 pb-0 relative flex-shrink-0 text-center">
+           {product.isBestSeller && (
+            <Badge variant="default" className="mx-auto mb-2 w-fit bg-accent text-accent-foreground shadow-md">
+              Best Seller
+            </Badge>
+           )}
            <DialogTitle className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 line-clamp-2">{product.name}</DialogTitle>
-           {/* Removed the explicit <DialogClose> button here */}
         </DialogHeader>
         
         <div className="overflow-y-auto flex-grow">
@@ -57,7 +61,7 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
                 alt={`Image of ${product.name} coffee`}
                 layout="fill"
                 objectFit="cover"
-                className="md:rounded-l-2xl" // Apply rounding to image if it's on the edge
+                className="md:rounded-l-2xl"
                 data-ai-hint={product.imageHint}
                 priority
               />

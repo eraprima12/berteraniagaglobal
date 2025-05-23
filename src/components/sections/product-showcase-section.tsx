@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { Badge } from '../ui/badge'; // Added import for Badge
 import { coffeeData, CoffeeType, CoffeeOrigin, getAllCoffeeOrigins, ProductDetails as ProductOriginDisplay, ProductDetails } from '../../data/content';
 import { Package, Search as SearchIcon, PackageSearch, Bean } from 'lucide-react';
 import { ProductDetailModal } from '../modal/product-detail-modal'; // Import the new modal
@@ -158,7 +159,7 @@ export function ProductShowcaseSection() {
                   <Card 
                     key={product.id} 
                     onClick={() => openProductModal(product)}
-                    className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col bg-background h-full cursor-pointer"
+                    className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col bg-background h-full cursor-pointer relative" // Added relative for badge positioning
                   >
                     <div className="relative w-full h-56">
                       <Image
@@ -168,6 +169,11 @@ export function ProductShowcaseSection() {
                         objectFit="cover"
                         data-ai-hint={product.imageHint}
                       />
+                      {product.isBestSeller && (
+                        <Badge variant="default" className="absolute top-3 right-3 z-10 bg-accent text-accent-foreground shadow-md">
+                          Best Seller
+                        </Badge>
+                      )}
                     </div>
                     <CardHeader>
                       <CardTitle className="text-xl text-primary flex items-center gap-2">
