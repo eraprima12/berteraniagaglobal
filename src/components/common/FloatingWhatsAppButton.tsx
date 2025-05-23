@@ -16,7 +16,7 @@ interface ChatMessage {
   text: string;
 }
 
-// Custom Terra Leaf Logo SVG Component
+// Custom Terra "Tree Leaves" Logo SVG Component
 const TerraLogo = ({ className }: { className?: string }) => (
   <svg
     className={cn("h-5 w-5", className)}
@@ -27,8 +27,9 @@ const TerraLogo = ({ className }: { className?: string }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    <path d="M11 20A7 7 0 0 1 4 13H2a10 10 0 0 0 10 10z"/>
-    <path d="M2 11h2a7 7 0 0 1 7-7V2a10 10 0 0 0-9 9z"/>
+    <circle cx="12" cy="8" r="3.5"/>
+    <circle cx="8" cy="13" r="3.5"/>
+    <circle cx="16" cy="13" r="3.5"/>
   </svg>
 );
 
