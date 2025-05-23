@@ -1,31 +1,172 @@
 
 "use client";
 
-import { MessageCircle } from 'lucide-react';
+import { useState, useRef, useEffect, type FormEvent } from 'react';
+import { MessageCircle, SendHorizonal, X, Bot, User, Loader2, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import { interactiveChatFlow } from '@/ai/flows/interactive-chat-flow'; // To be created
+
+interface ChatMessage {
+  id: string;
+  sender: 'user' | 'ai';
+  text: string;
+}
 
 export function FloatingWhatsAppButton() {
-  const phoneNumber = "6285156113241"; // Your WhatsApp number
-  const prefilledMessage = "Hello Bertera Niaga Global, I'd like to learn more about your products and services. Please let us know!";
+  const [isOpen, setIsOpen] = useState(false);
+  const [userQuery, setUserQuery] = useState('');
+  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+  const [aiSuggestedWhatsappMessage, setAiSuggestedWhatsappMessage] = useState<string | null>(null);
+  const [isLoadingAI, setIsLoadingAI] = useState(false);
+  const phoneNumber = "6285156113241";
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  const openWhatsApp = () => {
-    const encodedMessage = encodeURIComponent(prefilledMessage);
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chatHistory]);
+
+  const toggleOpen = () => {
+    setIsOpen(!isOpen);
+    if (!isOpen && chatHistory.length === 0) {
+      // Add initial greeting from AI when chat opens for the first time
+      setChatHistory([
+        { id: Date.now().toString(), sender: 'ai', text: "Hello! How can I help you with Bertera Niaga Global's coffee products today?" }
+      ]);
+    }
+  };
+
+  const handleSubmitQuery = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!userQuery.trim() || isLoadingAI) return;
+
+    const newUserMessage: ChatMessage = { id: Date.now().toString(), sender: 'user', text: userQuery };
+    setChatHistory(prev => [...prev, newUserMessage]);
+    setUserQuery('');
+    setIsLoadingAI(true);
+
+    try {
+      const response = await interactiveChatFlow({ userQuery: newUserMessage.text });
+      const aiResponseMessage: ChatMessage = { id: (Date.now() + 1).toString(), sender: 'ai', text: response.aiAnswer };
+      setChatHistory(prev => [...prev, aiResponseMessage]);
+      setAiSuggestedWhatsappMessage(response.suggestedWhatsappMessage);
+    } catch (error) {
+      console.error("Error fetching AI response:", error);
+      const errorResponseMessage: ChatMessage = { id: (Date.now() + 1).toString(), sender: 'ai', text: "Sorry, I'm having trouble connecting. Please try again later." };
+      setChatHistory(prev => [...prev, errorResponseMessage]);
+    } finally {
+      setIsLoadingAI(false);
+    }
+  };
+
+  const handleOpenWhatsApp = () => {
+    const message = aiSuggestedWhatsappMessage || "Hello Bertera Niaga Global, I'd like to learn more.";
+    const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+    setIsOpen(false); // Optionally close the chat widget
   };
 
   return (
-    <Button
-      onClick={openWhatsApp}
-      variant="default"
-      className={cn(
-        "fixed bottom-6 right-6 h-14 rounded-full shadow-xl z-50 transition-all duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center px-4",
-        "bg-green-500 hover:bg-green-600 text-white"
+    <>
+      {!isOpen && (
+        <Button
+          onClick={toggleOpen}
+          variant="default"
+          className={cn(
+            "fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-xl z-50 transition-all duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center",
+            "bg-green-500 hover:bg-green-600 text-white"
+          )}
+          aria-label="Open Chat"
+        >
+          <MessageCircle size={30} />
+        </Button>
       )}
-      aria-label="Learn More and Chat on WhatsApp"
-    >
-      <MessageCircle size={24} className="mr-2" />
-      <span className="text-sm font-medium">Learn More & Chat</span>
-    </Button>
+
+      {isOpen && (
+        <Card className="fixed bottom-6 right-6 w-80 sm:w-96 h-[70vh] max-h-[500px] z-50 shadow-2xl rounded-xl flex flex-col bg-background/80 dark:bg-neutral-900/80 backdrop-blur-lg border-border">
+          <CardHeader className="flex flex-row items-center justify-between p-4 border-b">
+            <CardTitle className="text-lg font-semibold text-primary flex items-center">
+              <Bot size={20} className="mr-2 text-primary" /> Chat with Us
+            </CardTitle>
+            <Button variant="ghost" size="icon" onClick={toggleOpen} className="text-muted-foreground hover:text-foreground">
+              <X size={20} />
+              <span className="sr-only">Close chat</span>
+            </Button>
+          </CardHeader>
+          
+          <ScrollArea className="flex-grow p-0">
+            <div ref={chatContainerRef} className="p-4 space-y-4">
+              {chatHistory.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={cn(
+                    "flex items-end gap-2 max-w-[85%]",
+                    msg.sender === 'user' ? 'ml-auto flex-row-reverse' : 'mr-auto'
+                  )}
+                >
+                  {msg.sender === 'ai' && <Bot size={20} className="text-primary flex-shrink-0 mb-1" />}
+                  {msg.sender === 'user' && <User size={20} className="text-accent flex-shrink-0 mb-1" />}
+                  <div
+                    className={cn(
+                      "p-2.5 rounded-lg shadow text-sm",
+                      msg.sender === 'user'
+                        ? 'bg-primary text-primary-foreground rounded-br-none'
+                        : 'bg-card text-card-foreground rounded-bl-none'
+                    )}
+                  >
+                    {msg.text.split('\n').map((line, i) => <p key={i}>{line}</p>)}
+                  </div>
+                </div>
+              ))}
+              {isLoadingAI && (
+                <div className="flex items-center gap-2 mr-auto max-w-[85%]">
+                   <Bot size={20} className="text-primary flex-shrink-0 mb-1" />
+                   <div className="p-2.5 rounded-lg shadow bg-card text-card-foreground rounded-bl-none">
+                    <Loader2 size={18} className="animate-spin text-muted-foreground" />
+                   </div>
+                </div>
+              )}
+            </div>
+          </ScrollArea>
+
+          <CardFooter className="p-3 border-t">
+            {aiSuggestedWhatsappMessage && !isLoadingAI && (
+                <Button 
+                    onClick={handleOpenWhatsApp} 
+                    className="w-full mb-2 bg-green-500 hover:bg-green-600 text-white"
+                    size="sm"
+                >
+                    <Phone size={16} className="mr-2"/> Learn More via WhatsApp
+                </Button>
+            )}
+            <form onSubmit={handleSubmitQuery} className="flex items-center gap-2 w-full">
+              <Textarea
+                value={userQuery}
+                onChange={(e) => setUserQuery(e.target.value)}
+                placeholder="Type your question..."
+                className="flex-grow resize-none bg-input/70 border-border focus:ring-primary text-sm p-2.5 min-h-[40px] max-h-[100px]"
+                rows={1}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSubmitQuery(e);
+                    }
+                }}
+                disabled={isLoadingAI}
+              />
+              <Button type="submit" size="icon" className="bg-accent hover:bg-accent/90 text-accent-foreground flex-shrink-0" disabled={isLoadingAI || !userQuery.trim()}>
+                {isLoadingAI ? <Loader2 size={18} className="animate-spin" /> : <SendHorizonal size={18} />}
+                <span className="sr-only">Send message</span>
+              </Button>
+            </form>
+          </CardFooter>
+        </Card>
+      )}
+    </>
   );
 }

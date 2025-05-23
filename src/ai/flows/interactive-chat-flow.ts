@@ -1,0 +1,91 @@
+
+'use server';
+/**
+ * @fileOverview A Genkit flow to handle interactive chat queries from users.
+ *
+ * - interactiveChatFlow - Answers user queries and suggests a follow-up WhatsApp message.
+ * - UserQueryInput - Input type for the flow.
+ * - AIChatResponseOutput - Output type for the flow.
+ */
+
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
+
+const UserQueryInputSchema = z.object({
+  userQuery: z.string().describe('The user_s question or statement.'),
+});
+export type UserQueryInput = z.infer<typeof UserQueryInputSchema>;
+
+const AIChatResponseOutputSchema = z.object({
+  aiAnswer: z.string().describe('The AI_s direct answer to the user_s query.'),
+  suggestedWhatsappMessage: z
+    .string()
+    .describe(
+      'A pre-composed message the user can send via WhatsApp to continue the conversation or get more details. This should incorporate the context of their original query.'
+    ),
+});
+export type AIChatResponseOutput = z.infer<typeof AIChatResponseOutputSchema>;
+
+export async function interactiveChatFlow(input: UserQueryInput): Promise<AIChatResponseOutput> {
+  return flow(input);
+}
+
+const prompt = ai.definePrompt({
+  name: 'interactiveChatPrompt',
+  input: { schema: UserQueryInputSchema },
+  output: { schema: AIChatResponseOutputSchema },
+  prompt: `You are a friendly and highly knowledgeable AI assistant for Bertera Niaga Global, a premium Indonesian coffee exporter.
+Your primary goal is to:
+1. Provide a concise, helpful, and accurate answer to the user's query regarding coffee, our products (Arabica, Robusta, Liberica beans like Mandheling, Gayo, Toraja, Arjuno, etc.), our company, shipping, or general coffee topics.
+2. If the query is about specific pricing, minimum order quantities, placing an order, or very detailed product specifications, politely state that this information is best handled directly via WhatsApp for the most up-to-date details and personalized service.
+3. Generate a "suggestedWhatsappMessage" that the user can click to send via WhatsApp. This message should be phrased from the user's perspective, referencing their original query, to make it easy for them to continue the conversation with a human agent. It should be a complete, ready-to-send opening message.
+
+User's query: "{{userQuery}}"
+
+Example 1:
+User Query: "Tell me about your Arjuno Arabica coffee."
+AI Answer: "Our Arjuno Arabica, sourced from Java, is a best-seller known for its heavy body, syrupy mouthfeel, and often presents spicy or nutty notes. It's a classic Indonesian coffee. For current availability, pricing details, or to discuss an order, please feel free to connect with us on WhatsApp!"
+Suggested WhatsApp Message: "Hello Bertera Niaga Global, I was asking about your Arjuno Arabica coffee and would like to get more details on pricing and availability."
+
+Example 2:
+User Query: "What's the minimum order for Gayo coffee?"
+AI Answer: "For specific details on minimum order quantities for our Gayo Arabica and other coffees, as well as current pricing, it's best to connect with our sales team directly on WhatsApp. They can provide you with the most accurate and up-to-date information."
+Suggested WhatsApp Message: "Hi Bertera Niaga Global, I'd like to inquire about the minimum order quantity and pricing for your Gayo Arabica coffee."
+
+Example 3:
+User Query: "Do you ship to Canada?"
+AI Answer: "Yes, we do export our premium Indonesian coffees worldwide, including to Canada! For specific shipping quotes and logistics for your location, please reach out to us on WhatsApp."
+Suggested WhatsApp Message: "Hello Bertera Niaga Global, I'm interested in your coffee and was wondering about shipping options and costs to Canada."
+
+Example 4 (General Question):
+User Query: "What's the difference between Arabica and Robusta?"
+AI Answer: "Great question! Generally, Arabica beans are known for their aromatic and complex flavor profiles, often sweeter with higher acidity. Robusta beans tend to be bolder, more bitter, with higher caffeine content and are often used in espresso blends for their rich crema. We offer a variety of both! If you have specific preferences or are looking for a particular type for your needs, let us know on WhatsApp!"
+Suggested WhatsApp Message: "Hi Bertera Niaga Global, I was learning about the differences between Arabica and Robusta. Could you tell me more about the specific types you offer?"
+
+If the user query is very vague like "coffee" or "hello":
+AI Answer: "Hello! Bertera Niaga Global is a premium Indonesian coffee exporter. We offer a range of high-quality Arabica, Robusta, and Liberica beans. How can I help you find the perfect coffee today? For specific inquiries, feel free to use the WhatsApp button."
+Suggested WhatsApp Message: "Hello Bertera Niaga Global, I'm interested in learning more about your coffee offerings."
+
+Keep your aiAnswer conversational and not too long. The main goal is to be helpful and then smoothly guide them to WhatsApp using the suggestedWhatsappMessage.
+Ensure the suggestedWhatsappMessage is always a polite and complete opening message from the user's perspective.
+`,
+});
+
+const flow = ai.defineFlow(
+  {
+    name: 'interactiveChatFlow',
+    inputSchema: UserQueryInputSchema,
+    outputSchema: AIChatResponseOutputSchema,
+  },
+  async (input) => {
+    const { output } = await prompt(input);
+    if (!output) {
+      // Fallback if AI fails
+      return {
+        aiAnswer: "I'm sorry, I couldn't process that. Could you try rephrasing or contact us on WhatsApp?",
+        suggestedWhatsappMessage: `Hello Bertera Niaga Global, I had a query: ${input.userQuery}`,
+      };
+    }
+    return output;
+  }
+);
