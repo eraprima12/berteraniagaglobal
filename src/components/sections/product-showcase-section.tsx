@@ -1,13 +1,13 @@
 
 "use client";
 import Image from 'next/image';
-import Link from 'next/link'; // Added Link for navigation
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { coffeeData, CoffeeType, CoffeeOrigin, getAllCoffeeOrigins, ProductDetails as ProductOriginDisplay } from '../../data/content';
+import { coffeeData, CoffeeType, CoffeeOrigin, getAllCoffeeOrigins, ProductDetails as ProductOriginDisplay, ProductDetails } from '../../data/content';
 import { Package, Search as SearchIcon, PackageSearch, Bean } from 'lucide-react';
+import { ProductDetailModal } from '../modal/product-detail-modal'; // Import the new modal
 
 const ALL_PRODUCTS_CATEGORY_ID = 'all-products';
 
@@ -24,6 +24,9 @@ export function ProductShowcaseSection() {
   const [searchTerm, setSearchTerm] = useState('');
   const [hydrated, setHydrated] = useState(false);
 
+  const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const categoryDefinitions: CategoryDefinition[] = [
     { id: ALL_PRODUCTS_CATEGORY_ID, name: 'All Products', description: 'Browse all our available coffee varieties.', icon: PackageSearch },
     ...coffeeData.map(type => ({ ...type, icon: Bean, id: type.id, name: type.name, description: type.description, origins: type.origins })),
@@ -38,6 +41,17 @@ export function ProductShowcaseSection() {
   const handleCategoryChange = (categoryId: string) => {
     setActiveCategory(categoryId);
     setSearchTerm(''); 
+  };
+
+  const openProductModal = (product: ProductDetails) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const closeProductModal = () => {
+    setIsModalOpen(false);
+    // Optionally clear selected product after a delay to allow modal to animate out
+    setTimeout(() => setSelectedProduct(null), 300);
   };
 
   const formatPrice = (price: number, priceUnit: string) => {
@@ -141,41 +155,43 @@ export function ProductShowcaseSection() {
             {filteredProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredProducts.map((product: ProductOriginDisplay) => (
-                  <Link key={product.id} href={`/products/${product.id}`} passHref>
-                    <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col bg-background h-full">
-                      <div className="relative w-full h-56">
-                        <Image
-                          src={product.imageUrl}
-                          alt={`Image of ${product.name}${product.coffeeTypeName ? ` (${product.coffeeTypeName})` : ''} coffee`}
-                          layout="fill"
-                          objectFit="cover"
-                          data-ai-hint={product.imageHint}
-                        />
-                      </div>
-                      <CardHeader>
-                        <CardTitle className="text-xl text-primary flex items-center gap-2">
-                          <Package size={24} /> 
-                          {product.name}
-                           {activeCategory === ALL_PRODUCTS_CATEGORY_ID && product.coffeeTypeName && (
-                            <span className="text-xs text-muted-foreground ml-1 whitespace-nowrap">({product.coffeeTypeName})</span>
-                          )}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="flex-grow flex flex-col justify-between">
-                        <CardDescription className="text-sm line-clamp-3">{product.description}</CardDescription>
-                        {hydrated && (
-                           <p className="text-lg font-semibold text-accent mt-4">
-                            {formatPrice(product.price, product.priceUnit)}
-                          </p>
+                  <Card 
+                    key={product.id} 
+                    onClick={() => openProductModal(product)}
+                    className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col bg-background h-full cursor-pointer"
+                  >
+                    <div className="relative w-full h-56">
+                      <Image
+                        src={product.imageUrl}
+                        alt={`Image of ${product.name}${product.coffeeTypeName ? ` (${product.coffeeTypeName})` : ''} coffee`}
+                        layout="fill"
+                        objectFit="cover"
+                        data-ai-hint={product.imageHint}
+                      />
+                    </div>
+                    <CardHeader>
+                      <CardTitle className="text-xl text-primary flex items-center gap-2">
+                        <Package size={24} /> 
+                        {product.name}
+                         {activeCategory === ALL_PRODUCTS_CATEGORY_ID && product.coffeeTypeName && (
+                          <span className="text-xs text-muted-foreground ml-1 whitespace-nowrap">({product.coffeeTypeName})</span>
                         )}
-                        {!hydrated && (
-                           <p className="text-lg font-semibold text-accent mt-4 animate-pulse">
-                             Loading price...
-                           </p>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </Link>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex-grow flex flex-col justify-between">
+                      <CardDescription className="text-sm line-clamp-3">{product.description}</CardDescription>
+                      {hydrated && (
+                         <p className="text-lg font-semibold text-accent mt-4">
+                          {formatPrice(product.price, product.priceUnit)}
+                        </p>
+                      )}
+                      {!hydrated && (
+                         <p className="text-lg font-semibold text-accent mt-4 animate-pulse">
+                           Loading price...
+                         </p>
+                      )}
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
             ) : (
@@ -188,6 +204,13 @@ export function ProductShowcaseSection() {
           </main>
         </div>
       </div>
+      {selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          isOpen={isModalOpen}
+          onClose={closeProductModal}
+        />
+      )}
     </section>
   );
 }
