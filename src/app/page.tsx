@@ -17,9 +17,9 @@ export const metadata: Metadata = {
     description: 'Your trusted partner for high-quality Indonesian coffee. Explore our range of Arabica, Robusta, and Liberica beans, and read our latest blog posts.',
     images: [
       {
-        url: '/images/logo/bertera-logo.png', 
+        url: '/images/logo/bertera-logo.png',
         width: 1200,
-        height: 200, 
+        height: 200,
         alt: 'Bertera Niaga Global Logo',
       },
     ],
@@ -42,15 +42,15 @@ export default function HomePage() {
       </AnimatedSection>
 
       <AnimatedSection delay="delay-100">
-        <OurStorySection />
-      </AnimatedSection>
-
-      <AnimatedSection delay="delay-100">
         <WhyChooseUsSection />
       </AnimatedSection>
 
       <AnimatedSection delay="delay-100">
         <BlogSection />
+      </AnimatedSection>
+
+      <AnimatedSection delay="delay-100">
+        <OurStorySection />
       </AnimatedSection>
 
       <AnimatedSection delay="delay-100">
@@ -63,5 +63,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-    

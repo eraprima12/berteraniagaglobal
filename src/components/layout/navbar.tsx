@@ -13,9 +13,9 @@ import { cn } from '@/lib/utils';
 const navLinks = [
   { href: '/#home', label: 'Home', sectionId: 'home' },
   { href: '/#products', label: 'Products', sectionId: 'products' },
-  { href: '/#our-story', label: 'Our Story', sectionId: 'our-story' },
   { href: '/#why-us', label: 'Why Us', sectionId: 'why-us' },
   { href: '/#blog', label: 'Blog', sectionId: 'blog' },
+  { href: '/#our-story', label: 'Our Story', sectionId: 'our-story' },
   { href: '/#testimonials', label: 'Testimonials', sectionId: 'testimonials' },
   { href: '/#contact-us', label: 'Contact Us', sectionId: 'contact-us' },
 ];
@@ -155,7 +155,7 @@ export function Navbar() {
         }
       }
     }
-  }, [activeSection, pathname]); // Removed navLinks from dependency array as it's constant now
+  }, [activeSection, pathname]); 
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     const targetPath = href.split('#')[0];
