@@ -86,7 +86,7 @@ export function Navbar() {
 
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md shadow-md">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg shadow-md">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/#home" className="flex items-center gap-2" onClick={(e) => handleLinkClick(e, '/#home')}>
           <Image
@@ -124,7 +124,7 @@ export function Navbar() {
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[250px] bg-background">
+            <SheetContent side="right" className="w-[250px]"> {/* Removed explicit bg-background */}
               <nav className="flex flex-col gap-6 p-6">
                 {navLinks.map((link) => (
                   <Link
