@@ -2,13 +2,13 @@
 "use client";
 
 import { Button } from '../ui/button';
-import { Caveat } from 'next/font/google'; // Changed from Dancing_Script to Caveat
+import { Alex_Brush as AlexBrushFont } from 'next/font/google'; // Changed to Alex_Brush
 
-// Configure the Caveat font
-const caveat = Caveat({
+// Configure the Alex Brush font
+const alexBrush = AlexBrushFont({
   subsets: ['latin'],
-  weight: ['700'], // Caveat supports 400, 500, 600, 700. '700' for bold.
-  variable: '--font-caveat', // Optional: if you want to use it as a CSS variable
+  weight: ['400'], // Alex Brush typically only has a 400 weight
+  variable: '--font-alex-brush', 
 });
 
 export function ParallaxHomeSection() {
@@ -32,8 +32,8 @@ export function ParallaxHomeSection() {
       
       <div className="relative z-20 p-4 max-w-3xl">
         <h1 
-          className={`${caveat.className} text-5xl sm:text-6xl md:text-7xl mb-8 leading-tight`} // Applied Caveat font and adjusted sizes
-          style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.6)' }} // Slightly adjusted shadow for better readability
+          className={`${alexBrush.className} text-6xl sm:text-7xl md:text-8xl mb-8 leading-tight`} // Applied Alex Brush font and adjusted sizes
+          style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }} // Adjusted shadow for Alex Brush
         >
           A sip from nusantara soil, to your soul
         </h1>
