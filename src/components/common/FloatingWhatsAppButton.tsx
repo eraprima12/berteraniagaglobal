@@ -88,86 +88,96 @@ export function FloatingWhatsAppButton() {
         </Button>
       )}
 
-      {isOpen && (
-        <Card className="fixed bottom-6 right-6 w-80 sm:w-96 h-[70vh] max-h-[500px] z-50 shadow-2xl rounded-xl flex flex-col bg-background/80 dark:bg-neutral-900/80 backdrop-blur-lg border-border">
-          <CardHeader className="flex flex-row items-center justify-between p-4 border-b">
-            <CardTitle className="text-lg font-semibold text-primary flex items-center">
-              <Bot size={20} className="mr-2 text-primary" /> Chat with Terra
-            </CardTitle>
-            <Button variant="ghost" size="icon" onClick={toggleOpen} className="text-muted-foreground hover:text-foreground">
-              <X size={20} />
-              <span className="sr-only">Close chat</span>
-            </Button>
-          </CardHeader>
-          
-          <ScrollArea className="flex-grow p-0">
-            <div ref={chatContainerRef} className="p-4 space-y-4">
-              {chatHistory.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={cn(
-                    "flex items-end gap-2 max-w-[85%]",
-                    msg.sender === 'user' ? 'ml-auto flex-row-reverse' : 'mr-auto'
-                  )}
-                >
-                  {msg.sender === 'ai' && <Bot size={20} className="text-primary flex-shrink-0 mb-1" />}
-                  {msg.sender === 'user' && <User size={20} className="text-accent flex-shrink-0 mb-1" />}
+      {/* Chat Panel */}
+      <div
+        className={cn(
+          "fixed bottom-6 right-6 w-80 sm:w-96 z-50 transition-all duration-300 ease-in-out transform",
+          isOpen 
+            ? "opacity-100 translate-y-0 scale-100" 
+            : "opacity-0 translate-y-10 scale-95 pointer-events-none" // pointer-events-none when hidden
+        )}
+      >
+        {isOpen && ( // Conditionally render card only when open to ensure animations work correctly on mount/unmount
+          <Card className="h-[70vh] max-h-[500px] shadow-2xl rounded-xl flex flex-col bg-background/80 dark:bg-neutral-900/80 backdrop-blur-lg border-border">
+            <CardHeader className="flex flex-row items-center justify-between p-4 border-b">
+              <CardTitle className="text-lg font-semibold text-primary flex items-center">
+                <Bot size={20} className="mr-2 text-primary" /> Chat with Terra
+              </CardTitle>
+              <Button variant="ghost" size="icon" onClick={toggleOpen} className="text-muted-foreground hover:text-foreground">
+                <X size={20} />
+                <span className="sr-only">Close chat</span>
+              </Button>
+            </CardHeader>
+            
+            <ScrollArea className="flex-grow p-0">
+              <div ref={chatContainerRef} className="p-4 space-y-4">
+                {chatHistory.map((msg) => (
                   <div
+                    key={msg.id}
                     className={cn(
-                      "p-2.5 rounded-lg shadow text-sm",
-                      msg.sender === 'user'
-                        ? 'bg-primary text-primary-foreground rounded-br-none'
-                        : 'bg-card text-card-foreground rounded-bl-none'
+                      "flex items-end gap-2 max-w-[85%]",
+                      msg.sender === 'user' ? 'ml-auto flex-row-reverse' : 'mr-auto'
                     )}
                   >
-                    {msg.text.split('\n').map((line, i) => <p key={i}>{line}</p>)}
+                    {msg.sender === 'ai' && <Bot size={20} className="text-primary flex-shrink-0 mb-1" />}
+                    {msg.sender === 'user' && <User size={20} className="text-accent flex-shrink-0 mb-1" />}
+                    <div
+                      className={cn(
+                        "p-2.5 rounded-lg shadow text-sm",
+                        msg.sender === 'user'
+                          ? 'bg-primary text-primary-foreground rounded-br-none'
+                          : 'bg-card text-card-foreground rounded-bl-none'
+                      )}
+                    >
+                      {msg.text.split('\n').map((line, i) => <p key={i}>{line}</p>)}
+                    </div>
                   </div>
-                </div>
-              ))}
-              {isLoadingAI && (
-                <div className="flex items-center gap-2 mr-auto max-w-[85%]">
-                   <Bot size={20} className="text-primary flex-shrink-0 mb-1" />
-                   <div className="p-2.5 rounded-lg shadow bg-card text-card-foreground rounded-bl-none">
-                    <Loader2 size={18} className="animate-spin text-muted-foreground" />
-                   </div>
-                </div>
-              )}
-            </div>
-          </ScrollArea>
+                ))}
+                {isLoadingAI && (
+                  <div className="flex items-center gap-2 mr-auto max-w-[85%]">
+                     <Bot size={20} className="text-primary flex-shrink-0 mb-1" />
+                     <div className="p-2.5 rounded-lg shadow bg-card text-card-foreground rounded-bl-none">
+                      <Loader2 size={18} className="animate-spin text-muted-foreground" />
+                     </div>
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
 
-          <CardFooter className="p-3 border-t flex flex-col gap-2">
-            {aiSuggestedWhatsappMessage && !isLoadingAI && (
-                <Button 
-                    onClick={handleOpenWhatsApp} 
-                    className="w-full bg-green-500 hover:bg-green-600 text-white" // Applied WhatsApp green styling
-                    size="sm"
-                >
-                    <Phone size={16} className="mr-2"/> Learn More via WhatsApp
+            <CardFooter className="p-3 border-t flex flex-col gap-2">
+              {aiSuggestedWhatsappMessage && !isLoadingAI && (
+                  <Button 
+                      onClick={handleOpenWhatsApp} 
+                      className="w-full bg-green-500 hover:bg-green-600 text-white"
+                      size="sm"
+                  >
+                      <Phone size={16} className="mr-2"/> Learn More via WhatsApp
+                  </Button>
+              )}
+              <form onSubmit={handleSubmitQuery} className="flex items-center gap-2 w-full">
+                <Textarea
+                  value={userQuery}
+                  onChange={(e) => setUserQuery(e.target.value)}
+                  placeholder="Type your question..."
+                  className="flex-grow resize-none bg-input/70 border-border focus:ring-primary text-sm p-2.5 min-h-[40px] max-h-[100px]"
+                  rows={1}
+                  onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          handleSubmitQuery(e);
+                      }
+                  }}
+                  disabled={isLoadingAI}
+                />
+                <Button type="submit" size="icon" className="bg-accent hover:bg-accent/90 text-accent-foreground flex-shrink-0" disabled={isLoadingAI || !userQuery.trim()}>
+                  {isLoadingAI ? <Loader2 size={18} className="animate-spin" /> : <SendHorizonal size={18} />}
+                  <span className="sr-only">Send message</span>
                 </Button>
-            )}
-            <form onSubmit={handleSubmitQuery} className="flex items-center gap-2 w-full">
-              <Textarea
-                value={userQuery}
-                onChange={(e) => setUserQuery(e.target.value)}
-                placeholder="Type your question..."
-                className="flex-grow resize-none bg-input/70 border-border focus:ring-primary text-sm p-2.5 min-h-[40px] max-h-[100px]"
-                rows={1}
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        handleSubmitQuery(e);
-                    }
-                }}
-                disabled={isLoadingAI}
-              />
-              <Button type="submit" size="icon" className="bg-accent hover:bg-accent/90 text-accent-foreground flex-shrink-0" disabled={isLoadingAI || !userQuery.trim()}>
-                {isLoadingAI ? <Loader2 size={18} className="animate-spin" /> : <SendHorizonal size={18} />}
-                <span className="sr-only">Send message</span>
-              </Button>
-            </form>
-          </CardFooter>
-        </Card>
-      )}
+              </form>
+            </CardFooter>
+          </Card>
+        )}
+      </div>
     </>
   );
 }
