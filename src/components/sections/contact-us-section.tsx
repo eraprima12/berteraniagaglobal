@@ -1,0 +1,149 @@
+
+"use client";
+
+import { useFormState, useFormStatus } from 'react-dom';
+import { useEffect, useRef } from 'react';
+import Image from 'next/image';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { MapPin, Phone, Mail, Loader2, CheckCircle } from 'lucide-react';
+import { submitContactForm, ContactFormState } from '@/app/actions';
+import { useToast } from "@/hooks/use-toast";
+
+const initialState: ContactFormState = {
+  message: null,
+  errors: null,
+  success: false,
+};
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" disabled={pending} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
+      {pending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+      Send Message
+    </Button>
+  );
+}
+
+export function ContactUsSection() {
+  const [state, formAction] = useFormState(submitContactForm, initialState);
+  const { toast } = useToast();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (state.message) {
+      if (state.success) {
+        toast({
+          title: "Success!",
+          description: state.message,
+          variant: "default",
+        });
+        formRef.current?.reset(); // Reset form on success
+      } else if (state.errors) {
+         toast({
+          title: "Error",
+          description: state.message || "Please correct the errors below.",
+          variant: "destructive",
+        });
+      }
+    }
+  }, [state, toast]);
+
+  return (
+    <section id="contact-us" className="py-16 md:py-24 bg-background">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Get in Touch</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            We'd love to hear from you. Whether you have a question about our products or partnerships, our team is ready to answer all your questions.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-12 items-start">
+          <Card className="shadow-lg bg-card">
+            <CardHeader>
+              <CardTitle className="text-2xl text-primary">Contact Form</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form ref={formRef} action={formAction} className="space-y-6">
+                <div>
+                  <Label htmlFor="name" className="text-foreground/80">Full Name</Label>
+                  <Input id="name" name="name" placeholder="Your Name" required className="bg-background/50"/>
+                  {state.errors?.name && <p className="text-sm text-destructive mt-1">{state.errors.name[0]}</p>}
+                </div>
+                <div>
+                  <Label htmlFor="email" className="text-foreground/80">Email Address</Label>
+                  <Input id="email" name="email" type="email" placeholder="your@email.com" required className="bg-background/50"/>
+                  {state.errors?.email && <p className="text-sm text-destructive mt-1">{state.errors.email[0]}</p>}
+                </div>
+                <div>
+                  <Label htmlFor="subject" className="text-foreground/80">Subject</Label>
+                  <Input id="subject" name="subject" placeholder="Inquiry about..." required className="bg-background/50"/>
+                  {state.errors?.subject && <p className="text-sm text-destructive mt-1">{state.errors.subject[0]}</p>}
+                </div>
+                <div>
+                  <Label htmlFor="message" className="text-foreground/80">Message</Label>
+                  <Textarea id="message" name="message" placeholder="Your message here..." rows={5} required className="bg-background/50"/>
+                  {state.errors?.message && <p className="text-sm text-destructive mt-1">{state.errors.message[0]}</p>}
+                </div>
+                <SubmitButton />
+              </form>
+            </CardContent>
+          </Card>
+
+          <div className="space-y-8">
+            <Card className="shadow-lg bg-card">
+              <CardHeader>
+                <CardTitle className="text-2xl text-primary">Our Information</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <MapPin className="w-6 h-6 text-accent mt-1 shrink-0" />
+                  <div>
+                    <h4 className="font-semibold text-primary">Address</h4>
+                    <p className="text-muted-foreground">Jl. Kopi Enak No. 123, Jakarta, Indonesia</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <Phone className="w-6 h-6 text-accent mt-1 shrink-0" />
+                  <div>
+                    <h4 className="font-semibold text-primary">Phone</h4>
+                    <p className="text-muted-foreground">+62 21 1234 5678</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <Mail className="w-6 h-6 text-accent mt-1 shrink-0" />
+                  <div>
+                    <h4 className="font-semibold text-primary">Email</h4>
+                    <p className="text-muted-foreground">info@berteraglobal.com</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="shadow-lg overflow-hidden bg-card">
+              <CardHeader>
+                <CardTitle className="text-2xl text-primary">Our Location</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                 <div className="aspect-video relative">
+                    <Image
+                      src="https://placehold.co/600x400.png"
+                      alt="Company Location Map"
+                      layout="fill"
+                      objectFit="cover"
+                      data-ai-hint="map location"
+                    />
+                  </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
