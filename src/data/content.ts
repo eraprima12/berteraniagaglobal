@@ -61,7 +61,7 @@ export interface StoryEvent {
 export const storyEvents: StoryEvent[] = [
   { id: '1', year: '2023', title: 'The Seed of an Idea', description: 'Our founder, Era Prima S, envisioned a company that would share Indonesia\'s finest coffees with the world.', imageUrl: '/images/journey/seed-of-an-idea.jpeg', imageHint: 'coffee beans idea' },
   { id: '2', year: '2024', title: 'First Export', description: 'Bertera Niaga Global made its first international shipment, marking a significant milestone.', imageUrl: '/images/journey/first-export.jpeg', imageHint: 'shipping container coffee' },
-  { id: '3', year: '2025', title: 'Expanding Horizons', description: 'We expanded our network of local farmers, ensuring fair trade practices and sustainable sourcing.', imageUrl: '/images/journey/expanding-horizons.jpeg', imageHint: 'coffee farmers group' },
+  { id: '3', year: '2025', title: 'Cultivating Excellence & Partnerships', description: 'We enhanced our own farm capabilities and strengthened partnerships with select local growers, focusing on superior quality and sustainable agroforestry from seed to cup.', imageUrl: '/images/journey/expanding-horizons.jpeg', imageHint: 'coffee farmers group' },
   { id: '4', year: '2025', title: 'Commitment to Quality', description: 'Implemented advanced quality control measures, reinforcing our "Beyond Expectations" promise.', imageUrl: '/images/journey/commitment-to-quality.jpeg', imageHint: 'coffee quality control lab' },
 ];
 
