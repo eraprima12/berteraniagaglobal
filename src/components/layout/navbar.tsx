@@ -14,9 +14,9 @@ const navLinks = [
   { href: '/#home', label: 'Home', sectionId: 'home' },
   { href: '/#products', label: 'Products', sectionId: 'products' },
   { href: '/#why-us', label: 'Why Us', sectionId: 'why-us' },
-  { href: '/#blog', label: 'Blog', sectionId: 'blog' },
   { href: '/#our-story', label: 'Our Story', sectionId: 'our-story' },
   { href: '/#testimonials', label: 'Testimonials', sectionId: 'testimonials' },
+  { href: '/#blog', label: 'Blog', sectionId: 'blog' },
   { href: '/#contact-us', label: 'Contact Us', sectionId: 'contact-us' },
 ];
 

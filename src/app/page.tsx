@@ -46,15 +46,15 @@ export default function HomePage() {
       </AnimatedSection>
 
       <AnimatedSection delay="delay-100">
-        <BlogSection />
-      </AnimatedSection>
-
-      <AnimatedSection delay="delay-100">
         <OurStorySection />
       </AnimatedSection>
-
+      
       <AnimatedSection delay="delay-100">
         <ClientTestimonialsSection />
+      </AnimatedSection>
+
+      <AnimatedSection delay="delay-100">
+        <BlogSection />
       </AnimatedSection>
 
       <AnimatedSection delay="delay-100">
