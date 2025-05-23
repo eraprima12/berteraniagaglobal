@@ -91,7 +91,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             className="prose prose-lg dark:prose-invert max-w-none text-foreground/90 
                        prose-headings:text-primary prose-a:text-accent prose-strong:text-foreground
                        prose-ul:list-disc prose-ul:pl-6 prose-ol:list-decimal prose-ol:pl-6
-                       prose-li:my-1"
+                       prose-li:mb-2" // Changed from prose-li:my-1
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
