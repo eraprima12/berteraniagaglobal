@@ -1,7 +1,6 @@
 
 "use client";
 
-import Image from 'next/image';
 import { Button } from '../ui/button';
 
 export function ParallaxHomeSection() {
@@ -13,18 +12,13 @@ export function ParallaxHomeSection() {
     }
   };
   
+  const backgroundImageUrl = "https://placehold.co/1920x1080.png"; // A.I. HINT: coffee plantation lush green
+
   return (
-    <section id="home" className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden">
-      <Image
-        src="https://placehold.co/1920x1080.png"
-        alt="Coffee Plantation Background"
-        layout="fill"
-        objectFit="cover"
-        quality={85}
-        className="z-0"
-        data-ai-hint="coffee plantation"
-        priority
-      />
+    <section 
+      id="home" 
+      className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden"
+    >
       {/* Overlay for better text readability */}
       <div className="absolute inset-0 bg-black/50 z-10"></div>
       
@@ -46,12 +40,9 @@ export function ParallaxHomeSection() {
         </Button>
       </div>
       <style jsx>{`
-        // Basic CSS parallax effect. For more advanced effects, JS might be needed.
-        // Next/Image with layout="fill" and objectFit="cover" handles the image responsiveness.
-        // True parallax (background moving at different speed) is better with JS or more complex CSS.
-        // This setup gives a full-screen hero image.
         section {
-          background-attachment: fixed; /* This can cause issues on mobile, often disabled via media query or JS detection */
+          background-image: url(${backgroundImageUrl});
+          background-attachment: fixed;
           background-position: center;
           background-repeat: no-repeat;
           background-size: cover;
