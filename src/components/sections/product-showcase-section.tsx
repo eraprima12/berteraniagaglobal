@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { coffeeData, CoffeeType, CoffeeOrigin } from '../../data/content';
-import { Package, Search as SearchIcon } from 'lucide-react';
+import { Package, Search as SearchIcon, PackageSearch, Bean } from 'lucide-react';
 
 const ALL_PRODUCTS_CATEGORY_ID = 'all-products';
 
@@ -14,13 +14,22 @@ interface ProductOriginDisplay extends CoffeeOrigin {
   coffeeTypeName?: string;
 }
 
+interface CategoryDefinition {
+  id: string;
+  name: string;
+  description: string;
+  icon: React.ElementType;
+  origins?: CoffeeOrigin[]; // For coffee types
+}
+
+
 export function ProductShowcaseSection() {
   const [searchTerm, setSearchTerm] = useState('');
   const [hydrated, setHydrated] = useState(false);
 
-  const categoryDefinitions: Array<CoffeeType | { id: string; name: string; description: string; origins?: never }> = [
-    { id: ALL_PRODUCTS_CATEGORY_ID, name: 'All Products', description: 'Browse all our available coffee varieties.' },
-    ...coffeeData,
+  const categoryDefinitions: CategoryDefinition[] = [
+    { id: ALL_PRODUCTS_CATEGORY_ID, name: 'All Products', description: 'Browse all our available coffee varieties.', icon: PackageSearch },
+    ...coffeeData.map(type => ({ ...type, icon: Bean })),
   ];
 
   const [activeCategory, setActiveCategory] = useState(categoryDefinitions[0]?.id || ALL_PRODUCTS_CATEGORY_ID);
@@ -56,9 +65,17 @@ export function ProductShowcaseSection() {
   );
 
   const getFilteredProducts = (): ProductOriginDisplay[] => {
-    const sourceProducts = activeCategory === ALL_PRODUCTS_CATEGORY_ID
-      ? allCoffeeOrigins
-      : coffeeData.find(type => type.id === activeCategory)?.origins || [];
+    const selectedCategory = categoryDefinitions.find(cat => cat.id === activeCategory);
+    
+    let sourceProducts: ProductOriginDisplay[];
+    if (activeCategory === ALL_PRODUCTS_CATEGORY_ID) {
+      sourceProducts = allCoffeeOrigins;
+    } else if (selectedCategory && selectedCategory.origins) {
+      sourceProducts = (selectedCategory as CoffeeType).origins;
+    } else {
+       sourceProducts = [];
+    }
+
 
     if (searchTerm === '') {
       return sourceProducts;
@@ -93,9 +110,10 @@ export function ProductShowcaseSection() {
                 <Button
                   key={cat.id}
                   variant={activeCategory === cat.id ? "default" : "ghost"}
-                  className="w-full justify-start text-left h-auto py-2 px-3"
+                  className="w-full justify-start text-left h-auto py-2 px-3 flex items-center gap-2"
                   onClick={() => handleCategoryChange(cat.id)}
                 >
+                  <cat.icon className="h-4 w-4 mr-2 shrink-0" />
                   {cat.name}
                 </Button>
               ))}
@@ -118,7 +136,10 @@ export function ProductShowcaseSection() {
             
             {currentCategoryInfo && (
               <div className="mb-8 p-6 bg-background rounded-lg shadow">
-                <h3 className="text-2xl font-semibold text-primary mb-3">{currentCategoryInfo.name}</h3>
+                <h3 className="text-2xl font-semibold text-primary mb-3 flex items-center gap-2">
+                   <currentCategoryInfo.icon className="h-6 w-6" />
+                   {currentCategoryInfo.name}
+                </h3>
                 <p className="text-muted-foreground">{currentCategoryInfo.description}</p>
               </div>
             )}
@@ -174,3 +195,4 @@ export function ProductShowcaseSection() {
     </section>
   );
 }
+
