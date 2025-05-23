@@ -5,13 +5,14 @@ import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useEffect, useRef } from 'react';
 import Map, { Marker } from 'react-map-gl';
+import Image from 'next/image'; // Added for logo marker
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { MapPin, Phone, Mail, Loader2, CheckCircle, Pin } from 'lucide-react';
-import { submitContactForm, ContactFormState } from '../../app/actions';
+import { MapPin, Phone, Mail, Loader2 } from 'lucide-react'; // Removed Pin, will use logo
+import { submitContactForm, type ContactFormState } from '../../app/actions';
 import { useToast } from "../../hooks/use-toast";
 
 const initialState: ContactFormState = {
@@ -35,8 +36,8 @@ export function ContactUsSection() {
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
-  const companyLatitude = -7.2602724;
-  const companyLongitude = 112.6816155;
+  const companyLatitude = -7.2603033;
+  const companyLongitude = 112.6816925;
 
   useEffect(() => {
     if (state.message) {
@@ -46,7 +47,7 @@ export function ContactUsSection() {
           description: state.message,
           variant: "default",
         });
-        formRef.current?.reset(); 
+        formRef.current?.reset();
       } else if (state.errors) {
          toast({
           title: "Error",
@@ -146,7 +147,15 @@ export function ContactUsSection() {
                       mapStyle="mapbox://styles/mapbox/streets-v12"
                     >
                       <Marker longitude={companyLongitude} latitude={companyLatitude} anchor="bottom" >
-                        <Pin className="w-8 h-8 text-red-600 fill-red-500" />
+                        <div className="w-10 h-10 p-0.5 bg-background rounded-full shadow-md border-2 border-primary">
+                          <Image
+                            src="/images/logo/bertera-logo.png" 
+                            alt="Bertera Niaga Global Location"
+                            width={40} 
+                            height={40} 
+                            className="rounded-full object-contain"
+                          />
+                        </div>
                       </Marker>
                     </Map>
                   </div>
