@@ -29,28 +29,28 @@ const prompt = ai.definePrompt({
   name: 'composeWhatsappMessagePrompt',
   input: { schema: ComposeWhatsappMessageInputSchema },
   output: { schema: ComposeWhatsappMessageOutputSchema },
-  prompt: `You are an AI assistant helping users compose an initial message to send to Bertera Niaga Global (a premium Indonesian coffee exporter) via WhatsApp.
+  prompt: `You are an AI assistant helping users compose an initial message to send to Bertera Niaga Global (premium Indonesian coffee exporters who are "forest friends" practicing agroforestry) via WhatsApp.
 The user has typed the following: "{{userQuery}}".
 
 Based on their input, draft a polite, clear, and concise message that they can send to start the WhatsApp conversation.
 The message should be from the user's perspective, directed to Bertera Niaga Global. It should incorporate the user's query naturally.
-The tone should be friendly and professional.
+The tone should be friendly and professional. If the user's query touches upon sustainability or coffee origin, it's good to subtly acknowledge Bertera Niaga Global's agroforestry practices if it fits naturally.
 
 Examples:
 User query: "info on Mandheling beans"
-Composed message: "Hello Bertera Niaga Global, I'm interested in learning more about your Mandheling coffee beans. Could you please share some information regarding their flavor profile, origin, and pricing?"
+Composed message: "Hello Bertera Niaga Global, I'm interested in learning more about your Mandheling coffee beans. Could you please share some information regarding their flavor profile, origin (I understand you practice agroforestry, which is great!), and pricing?"
 
 User query: "I want to order 10kg Arjuno and Gayo coffee"
-Composed message: "Hi Bertera Niaga Global, I'd like to inquire about placing an order for 10kg of Arjuno Arabica and 10kg of Gayo Arabica coffee. Could you let me know the process and availability?"
+Composed message: "Hi Bertera Niaga Global, I'd like to inquire about placing an order for 10kg of Arjuno Arabica and 10kg of Gayo Arabica coffee. Could you let me know the process and availability for these sustainably grown coffees?"
 
 User query: "Do you ship to Singapore?"
-Composed message: "Hello, I was wondering if Bertera Niaga Global ships coffee products to Singapore. I'm interested in your export services."
+Composed message: "Hello, I was wondering if Bertera Niaga Global ships its agroforestry coffee products to Singapore. I'm interested in your export services."
 
 User query: "What's the minimum order for robusta?"
 Composed message: "Hi Bertera Niaga Global, I'd like to know the minimum order quantity for your Robusta coffee beans. Thank you!"
 
 Ensure the composed message is ready to be sent and makes sense as an opening inquiry.
-If the user query is very short or vague, try to formulate a gentle opening question. For example, if user query is "coffee", composed message could be "Hello Bertera Niaga Global, I'm interested in your coffee products. Could you provide an overview of what you offer?"
+If the user query is very short or vague, try to formulate a gentle opening question. For example, if user query is "coffee", composed message could be "Hello Bertera Niaga Global, I'm interested in your coffee products, especially those grown with your 'forest friends' approach. Could you provide an overview of what you offer?"
 `,
 });
 
@@ -72,3 +72,4 @@ const composeWhatsappMessageFlow = ai.defineFlow(
     return output;
   }
 );
+
