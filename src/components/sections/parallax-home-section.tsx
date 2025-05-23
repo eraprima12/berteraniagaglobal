@@ -12,7 +12,7 @@ export function ParallaxHomeSection() {
     }
   };
   
-  const backgroundImageUrl = "https://placehold.co/1920x1080.png"; // A.I. HINT: coffee plantation lush green
+  const backgroundImageUrl = "/images/home/red_beans_coffee.jpeg"; // A.I. HINT: coffee plantation lush green
 
   return (
     <section 
