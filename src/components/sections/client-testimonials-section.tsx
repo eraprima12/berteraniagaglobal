@@ -91,9 +91,9 @@ export function ClientTestimonialsSection() {
                         )}
                       </div>
                     </CardHeader>
-                    <CardContent className="flex-grow pt-4">
-                      <blockquote className="relative border-l-4 border-accent pl-4 italic text-foreground/80">
-                        <Quote className="absolute -top-2 -left-2 h-6 w-6 text-accent/50" />
+                    <CardContent className="flex-grow pt-4 relative"> {/* Added relative for icon positioning */}
+                      <Quote className="absolute top-3 left-3 h-5 w-5 text-accent opacity-60" /> {/* Adjusted icon position and style */}
+                      <blockquote className="pl-10 italic text-foreground/80"> {/* Removed border, added padding for icon */}
                         <p>{testimonial.testimonialText}</p>
                       </blockquote>
                     </CardContent>
@@ -131,5 +131,6 @@ export function ClientTestimonialsSection() {
     </section>
   );
 }
+    
 
     
