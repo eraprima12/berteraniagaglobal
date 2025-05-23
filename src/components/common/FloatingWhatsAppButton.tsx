@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useRef, useEffect, type FormEvent } from 'react';
-import { MessageCircle, SendHorizonal, X, User, Loader2, Phone } from 'lucide-react'; // Removed Bot icon
+import { MessageCircle, SendHorizonal, X, User, Loader2, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,10 +16,10 @@ interface ChatMessage {
   text: string;
 }
 
-// Custom Terra Logo SVG Component
+// Custom Terra Logo SVG Component - Earthy Sprout in Circle
 const TerraLogo = ({ className }: { className?: string }) => (
   <svg
-    className={cn("h-5 w-5", className)} // Default size, can be overridden by className
+    className={cn("h-5 w-5", className)}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -27,7 +27,9 @@ const TerraLogo = ({ className }: { className?: string }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    <path d="M12 3v18M4 3h16" />
+    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/> {/* Circle for earth */}
+    <path d="M12 16V9"/> {/* Sprout stem */}
+    <path d="M10 11l2-2 2 2"/> {/* Sprout leaves (small upward V) */}
   </svg>
 );
 
@@ -125,7 +127,7 @@ export function FloatingWhatsAppButton() {
               </Button>
             </CardHeader>
             
-            <ScrollArea className="flex-grow p-0">
+            <div className="flex-grow overflow-y-auto min-h-0"> {/* Added min-h-0 here */}
               <div ref={chatContainerRef} className="p-4 space-y-4">
                 {chatHistory.map((msg) => (
                   <div
@@ -158,7 +160,7 @@ export function FloatingWhatsAppButton() {
                   </div>
                 )}
               </div>
-            </ScrollArea>
+            </div>
 
             <CardFooter className="p-3 border-t flex flex-col gap-2">
               {aiSuggestedWhatsappMessage && !isLoadingAI && (
@@ -197,3 +199,4 @@ export function FloatingWhatsAppButton() {
     </>
   );
 }
+
