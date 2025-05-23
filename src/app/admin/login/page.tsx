@@ -1,7 +1,8 @@
 
 "use client";
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState } from 'react'; // Updated import
+import { useFormStatus } from 'react-dom'; // Corrected import
 import { loginAction, type LoginState } from '../actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,7 +29,7 @@ function SubmitButton() {
 }
 
 export default function LoginPage() {
-  const [state, formAction] = useFormState(loginAction, initialState);
+  const [state, formAction] = useActionState(loginAction, initialState); // Updated hook
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
