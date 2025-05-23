@@ -97,7 +97,6 @@ export function FloatingWhatsAppButton() {
           variant="default"
           className={cn(
             "fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-xl z-50 transition-all duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
-            // Removed "bg-green-500 hover:bg-green-600 text-white" to use theme's primary color via variant="default"
           )}
           aria-label="Open Chat"
         >
@@ -115,7 +114,7 @@ export function FloatingWhatsAppButton() {
         )}
       >
         {isOpen && ( // Conditionally render card only when open to ensure animations work correctly on mount/unmount
-          <Card className="h-[70vh] max-h-[500px] shadow-2xl rounded-xl flex flex-col bg-background/80 dark:bg-neutral-900/80 backdrop-blur-lg border-border">
+          <Card className="h-[70vh] max-h-[500px] shadow-2xl rounded-xl flex flex-col bg-card/80 dark:bg-card/80 backdrop-blur-lg border-border">
             <CardHeader className="flex flex-row items-center justify-between p-4 border-b">
               <CardTitle className="text-lg font-semibold text-primary flex items-center">
                 <TerraLogo className="mr-2 text-primary h-5 w-5" /> Chat with Terra
