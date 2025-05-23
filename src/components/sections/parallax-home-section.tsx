@@ -27,7 +27,7 @@ export function ParallaxHomeSection() {
           Bertera Niaga Global
         </h1>
         <p className="text-xl sm:text-2xl md:text-3xl font-light mb-8" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.7)' }}>
-          Beyond Border, Beyond Expectations
+          A sip from nusantara soil, to your soul
         </p>
         <Button 
           size="lg" 
