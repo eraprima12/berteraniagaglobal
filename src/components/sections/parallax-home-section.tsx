@@ -2,7 +2,14 @@
 "use client";
 
 import { Button } from '../ui/button';
-// Removed Alex_Brush font import as it's no longer used for the main headline
+import { Alex_Brush as AlexBrushFont } from 'next/font/google';
+
+// Configure Alex Brush font
+const alexBrush = AlexBrushFont({
+  weight: '400', // Alex Brush typically only has a 'regular' weight
+  subsets: ['latin'],
+  display: 'swap', // Ensures text remains visible during font loading
+});
 
 export function ParallaxHomeSection() {
   const handleScrollToProducts = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -25,9 +32,9 @@ export function ParallaxHomeSection() {
 
       <div className="relative z-20 p-4 max-w-4xl">
         <h1
-          className={`font-bold text-6xl sm:text-7xl md:text-8xl mb-6 leading-tight`} // Reverted font size, removed specific font class
+          className={`font-bold text-6xl sm:text-7xl md:text-8xl mb-6 leading-tight ${alexBrush.className}`} // Apply Alex Brush class
           style={{
-            textShadow: '1px 1px 3px rgba(0,0,0,0.4)'
+            textShadow: '1px 1px 3px rgba(0,0,0,0.5)' // Adjusted shadow for better script font readability
           }}
         >
           Bertera Niaga Global
@@ -43,7 +50,7 @@ export function ParallaxHomeSection() {
           className="bg-accent text-accent-foreground px-10 py-4 text-xl rounded-lg shadow-xl
                      transition-all duration-300 ease-in-out
                      transform hover:scale-105 hover:shadow-2xl
-                     filter hover:brightness-110" // Maintained button aesthetics
+                     filter hover:brightness-110"
           onClick={handleScrollToProducts}
           aria-label="Explore Our Coffees"
         >
