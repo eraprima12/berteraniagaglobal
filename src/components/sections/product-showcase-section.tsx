@@ -1,9 +1,9 @@
 
 "use client";
 import Image from 'next/image';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { coffeeData, CoffeeType, CoffeeOrigin } from '@/data/content';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { coffeeData, CoffeeType, CoffeeOrigin } from '../../data/content';
 import { Package } from 'lucide-react';
 
 export function ProductShowcaseSection() {

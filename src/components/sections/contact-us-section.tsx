@@ -4,14 +4,14 @@
 import { useFormState, useFormStatus } from 'react-dom';
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { Label } from "../ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { MapPin, Phone, Mail, Loader2, CheckCircle } from 'lucide-react';
-import { submitContactForm, ContactFormState } from '@/app/actions';
-import { useToast } from "@/hooks/use-toast";
+import { submitContactForm, ContactFormState } from '../../app/actions';
+import { useToast } from "../../hooks/use-toast";
 
 const initialState: ContactFormState = {
   message: null,

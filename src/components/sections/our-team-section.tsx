@@ -1,8 +1,8 @@
 
 import Image from 'next/image';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { teamMembers, TeamMember } from '@/data/content';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { teamMembers, TeamMember } from '../../data/content';
 import { Users } from 'lucide-react';
 
 export function OurTeamSection() {
