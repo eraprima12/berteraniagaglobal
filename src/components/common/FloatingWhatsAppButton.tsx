@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
-import { interactiveChatFlow } from '@/ai/flows/interactive-chat-flow'; // To be created
+import { interactiveChatFlow } from '@/ai/flows/interactive-chat-flow';
 
 interface ChatMessage {
   id: string;
@@ -47,6 +47,7 @@ export function FloatingWhatsAppButton() {
 
     const newUserMessage: ChatMessage = { id: Date.now().toString(), sender: 'user', text: userQuery };
     setChatHistory(prev => [...prev, newUserMessage]);
+    setAiSuggestedWhatsappMessage(null); // Clear previous suggestion, hide WhatsApp button
     setUserQuery('');
     setIsLoadingAI(true);
 
@@ -134,11 +135,11 @@ export function FloatingWhatsAppButton() {
             </div>
           </ScrollArea>
 
-          <CardFooter className="p-3 border-t">
+          <CardFooter className="p-3 border-t flex flex-col gap-2">
             {aiSuggestedWhatsappMessage && !isLoadingAI && (
                 <Button 
                     onClick={handleOpenWhatsApp} 
-                    className="w-full mb-2 bg-green-500 hover:bg-green-600 text-white"
+                    className="w-full bg-green-500 hover:bg-green-600 text-white" // Applied WhatsApp green styling
                     size="sm"
                 >
                     <Phone size={16} className="mr-2"/> Learn More via WhatsApp
@@ -170,3 +171,5 @@ export function FloatingWhatsAppButton() {
     </>
   );
 }
+
+    
