@@ -7,8 +7,8 @@ import { Alex_Brush as AlexBrushFont } from 'next/font/google';
 // Configure the Alex Brush font
 const alexBrush = AlexBrushFont({
   subsets: ['latin'],
-  weight: ['400'], // Alex Brush typically only has a 400 weight
-  // Removed 'variable' option to apply font directly via className
+  weight: ['400'], 
+  variable: '--font-alex-brush', // Define a CSS variable
 });
 
 export function ParallaxHomeSection() {
@@ -25,15 +25,17 @@ export function ParallaxHomeSection() {
   return (
     <section 
       id="home" 
-      className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden"
+      // Apply the CSS variable class to the section
+      className={`${alexBrush.variable} relative h-screen flex items-center justify-center text-center text-white overflow-hidden`}
     >
       {/* Overlay for better text readability and frosted glass effect */}
       <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-sm z-10"></div>
       
       <div className="relative z-20 p-4 max-w-3xl">
         <h1 
-          className={`${alexBrush.className} text-6xl sm:text-7xl md:text-8xl mb-8 leading-tight`} // Applied Alex Brush font
-          style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }} 
+          // Use the new Tailwind utility class for Alex Brush
+          className="font-alex-brush text-6xl sm:text-7xl md:text-8xl mb-8 leading-tight"
+          style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.4)' }} 
         >
           A sip from nusantara soil, to your soul
         </h1>

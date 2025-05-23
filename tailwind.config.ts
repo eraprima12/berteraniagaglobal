@@ -1,4 +1,6 @@
+
 import type { Config } from "tailwindcss";
+import defaultTheme from 'tailwindcss/defaultTheme'; // Import defaultTheme
 
 export default {
     darkMode: ["class"],
@@ -9,6 +11,10 @@ export default {
   ],
   theme: {
   	extend: {
+      fontFamily: {
+        sans: ['var(--font-inter)', ...defaultTheme.fontFamily.sans],
+        'alex-brush': ['var(--font-alex-brush)', 'cursive'], // Add Alex Brush
+      },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
