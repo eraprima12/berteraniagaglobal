@@ -5,10 +5,11 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Badge } from '../ui/badge'; // Added import for Badge
-import { coffeeData, CoffeeType, CoffeeOrigin, getAllCoffeeOrigins, ProductDetails as ProductOriginDisplay, ProductDetails } from '../../data/content';
-import { Package, Search as SearchIcon, PackageSearch, Bean } from 'lucide-react';
-import { ProductDetailModal } from '../modal/product-detail-modal'; // Import the new modal
+import { Badge } from '../ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"; // Added Select imports
+import { coffeeData, CoffeeOrigin, getAllCoffeeOrigins, ProductDetails as ProductOriginDisplay, ProductDetails } from '../../data/content';
+import { Package, Search as SearchIcon, PackageSearch, Bean, ArrowDownUp } from 'lucide-react'; // Added ArrowDownUp for sort icon
+import { ProductDetailModal } from '../modal/product-detail-modal';
 
 const ALL_PRODUCTS_CATEGORY_ID = 'all-products';
 
@@ -20,13 +21,14 @@ interface CategoryDefinition {
   origins?: CoffeeOrigin[];
 }
 
+type SortOrder = "default" | "price-asc" | "price-desc" | "name-asc" | "name-desc";
 
 export function ProductShowcaseSection() {
   const [searchTerm, setSearchTerm] = useState('');
   const [hydrated, setHydrated] = useState(false);
-
   const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortOrder, setSortOrder] = useState<SortOrder>("default");
 
   const categoryDefinitions: CategoryDefinition[] = [
     { id: ALL_PRODUCTS_CATEGORY_ID, name: 'All Products', description: 'Browse all our available coffee varieties.', icon: PackageSearch },
@@ -42,6 +44,7 @@ export function ProductShowcaseSection() {
   const handleCategoryChange = (categoryId: string) => {
     setActiveCategory(categoryId);
     setSearchTerm(''); 
+    setSortOrder("default"); // Reset sort order when category changes
   };
 
   const openProductModal = (product: ProductDetails) => {
@@ -51,28 +54,24 @@ export function ProductShowcaseSection() {
 
   const closeProductModal = () => {
     setIsModalOpen(false);
-    // Optionally clear selected product after a delay to allow modal to animate out
     setTimeout(() => setSelectedProduct(null), 300);
   };
 
   const formatPrice = (price: number, priceUnit: string) => {
     if (!hydrated) return `Loading price...`;
-
     const parts = priceUnit.split(' ');
     const currencyCode = parts[0];
     const unit = parts.slice(1).join(' ');
-    
     try {
       return `${new Intl.NumberFormat(undefined, { style: 'currency', currency: currencyCode, minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(price)}${unit ? ` ${unit}` : ''}`;
     } catch (e) {
-      // Fallback for invalid currency codes or environments
       return `${currencyCode} ${price.toFixed(2)}${unit ? ` ${unit}` : ''}`;
     }
   };
   
   const allProductsList = getAllCoffeeOrigins();
 
-  const getFilteredProducts = (): ProductOriginDisplay[] => {
+  const getFilteredAndSortedProducts = (): ProductOriginDisplay[] => {
     let sourceProducts: ProductOriginDisplay[];
 
     if (activeCategory === ALL_PRODUCTS_CATEGORY_ID) {
@@ -88,18 +87,40 @@ export function ProductShowcaseSection() {
         : [];
     }
 
-    if (searchTerm === '') {
-      return sourceProducts;
+    let filtered = sourceProducts;
+    if (searchTerm !== '') {
+      filtered = sourceProducts.filter(product =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (product.coffeeTypeName && product.coffeeTypeName.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
     }
 
-    return sourceProducts.filter(product =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (product.coffeeTypeName && product.coffeeTypeName.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+    // Apply sorting
+    let sortedProducts = [...filtered]; // Create a new array to avoid mutating the original
+    switch (sortOrder) {
+      case "price-asc":
+        sortedProducts.sort((a, b) => a.price - b.price);
+        break;
+      case "price-desc":
+        sortedProducts.sort((a, b) => b.price - a.price);
+        break;
+      case "name-asc":
+        sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "name-desc":
+        sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      case "default":
+      default:
+        // No specific sort, or maintain original order (if applicable)
+        // For now, it will be the order after filtering
+        break;
+    }
+    return sortedProducts;
   };
   
-  const filteredProducts = getFilteredProducts();
+  const filteredAndSortedProducts = getFilteredAndSortedProducts();
   const currentCategoryInfo = categoryDefinitions.find(cat => cat.id === activeCategory);
 
   return (
@@ -131,16 +152,33 @@ export function ProductShowcaseSection() {
           </aside>
 
           <main className="md:w-3/4 lg:w-4/5 space-y-6">
-            <div className="relative">
-              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder={`Search in ${currentCategoryInfo?.name || 'products'}...`}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-full bg-background/80 border-border focus:ring-primary"
-                aria-label={`Search coffee products in ${currentCategoryInfo?.name}`}
-              />
+            <div className="flex flex-col sm:flex-row gap-4 items-center">
+              <div className="relative flex-grow w-full sm:w-auto">
+                <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder={`Search in ${currentCategoryInfo?.name || 'products'}...`}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 w-full bg-background/80 border-border focus:ring-primary"
+                  aria-label={`Search coffee products in ${currentCategoryInfo?.name}`}
+                />
+              </div>
+              <div className="w-full sm:w-auto sm:min-w-[200px]">
+                <Select value={sortOrder} onValueChange={(value) => setSortOrder(value as SortOrder)}>
+                  <SelectTrigger className="w-full bg-background/80 border-border focus:ring-primary">
+                    <ArrowDownUp className="h-4 w-4 mr-2 text-muted-foreground" />
+                    <SelectValue placeholder="Sort by..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="default">Default</SelectItem>
+                    <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                    <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                    <SelectItem value="name-asc">Name: A-Z</SelectItem>
+                    <SelectItem value="name-desc">Name: Z-A</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             
             {currentCategoryInfo && (
@@ -153,13 +191,13 @@ export function ProductShowcaseSection() {
               </div>
             )}
               
-            {filteredProducts.length > 0 ? (
+            {filteredAndSortedProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProducts.map((product: ProductOriginDisplay) => (
+                {filteredAndSortedProducts.map((product: ProductOriginDisplay) => (
                   <Card 
                     key={product.id} 
                     onClick={() => openProductModal(product)}
-                    className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col bg-background h-full cursor-pointer relative" // Added relative for badge positioning
+                    className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col bg-background h-full cursor-pointer relative"
                   >
                     <div className="relative w-full h-56">
                       <Image
@@ -203,7 +241,7 @@ export function ProductShowcaseSection() {
             ) : (
               <div className="text-center py-10 bg-background rounded-lg shadow">
                 <p className="text-lg text-muted-foreground">
-                  No {currentCategoryInfo?.name.toLowerCase()} products found matching "{searchTerm}".
+                  No {currentCategoryInfo?.name.toLowerCase()} products found {searchTerm ? `matching "${searchTerm}"` : ''}.
                 </p>
               </div>
             )}
