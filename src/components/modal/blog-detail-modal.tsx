@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import type { BlogPostFull } from '@/data/content';
 import { CalendarDays, UserCircle } from 'lucide-react';
-import { ScrollArea } from '@/components/ui/scroll-area';
+// Removed ScrollArea import as it's no longer used
 
 interface BlogDetailModalProps {
   post: BlogPostFull | null;
@@ -36,7 +36,8 @@ export function BlogDetailModal({ post, isOpen, onClose }: BlogDetailModalProps)
           {/* The default DialogContent close button (an X icon) will be used. */}
         </DialogHeader>
         
-        <ScrollArea className="flex-grow min-h-0"> {/* Added min-h-0 */}
+        {/* This div will handle the scrolling for the article content */}
+        <div className="flex-grow overflow-y-auto min-h-0">
           <article className="p-4 sm:p-6 md:p-8">
             <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 mb-6 sm:mb-8 rounded-lg overflow-hidden shadow-md">
               <Image
@@ -57,7 +58,7 @@ export function BlogDetailModal({ post, isOpen, onClose }: BlogDetailModalProps)
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
           </article>
-        </ScrollArea>
+        </div>
       </DialogContent>
     </Dialog>
   );
