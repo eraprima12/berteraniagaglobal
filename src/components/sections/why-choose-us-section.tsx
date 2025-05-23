@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Leaf, Mountain, Award, Users } from "lucide-react";
+import { Leaf, Mountain, Award, ShieldCheck } from "lucide-react"; // Changed Users to ShieldCheck for producer aspect
 
 export function WhyChooseUsSection() {
   const features = [
@@ -23,10 +23,10 @@ export function WhyChooseUsSection() {
         "From meticulous bean selection to expert processing, we are dedicated to delivering premium Indonesian coffee that consistently exceeds expectations. Quality is at the heart of everything we do.",
     },
     {
-      icon: <Users className="h-10 w-10 text-accent" />,
-      title: "Direct Farmer Partnerships",
+      icon: <ShieldCheck className="h-10 w-10 text-accent" />, // Changed icon
+      title: "Producer & Direct Sourcing", // Changed title
       description:
-        "We build strong, ethical relationships with local coffee farmers, ensuring fair prices and supporting their communities. This direct approach guarantees traceability and empowers our partners.",
+        "We are primarily producers with our own farm, ensuring quality control from seed to cup. We also work closely with select partner farmers, guaranteeing traceability and ethical practices, not just acting as traders.", // Changed description
     },
   ];
 
