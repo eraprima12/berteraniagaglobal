@@ -109,3 +109,69 @@ export function getAllCoffeeOrigins(): ProductDetails[] {
     }))
   );
 }
+
+// Blog Data
+export interface BlogPostPreview {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  imageUrl: string;
+  imageHint: string;
+  date: string; // e.g., "October 26, 2024"
+  author: string;
+}
+
+export interface BlogPostFull extends BlogPostPreview {
+  content: string; // Can be simple text, or Markdown for richer content
+  ogImage?: string; // Optional: specific Open Graph image for this post
+}
+
+const blogPostsData: BlogPostFull[] = [
+  {
+    id: '1',
+    title: 'The Art of Brewing the Perfect Arabica',
+    slug: 'brewing-perfect-arabica',
+    excerpt: 'Discover the secrets to unlocking the rich flavors and aromatic complexities of Arabica coffee. From bean selection to brewing techniques, we cover it all.',
+    imageUrl: 'https://placehold.co/600x400.png',
+    imageHint: 'coffee brewing process',
+    date: 'October 26, 2024',
+    author: 'Era Prima S, Coffee Enthusiast',
+    content: '<p>Arabica coffee, renowned for its delicate flavor and aromatic richness, offers a truly sublime coffee experience. But brewing the perfect cup requires attention to detail and an understanding of the bean\'s unique characteristics.</p><p><strong>Choosing Your Beans:</strong> Start with high-quality, freshly roasted Arabica beans. Look for information about the origin, processing method, and roast date. Single-origin beans can offer distinct flavor profiles, while blends can provide a more balanced cup.</p><p><strong>Grind Size Matters:</strong> The grind size is crucial and depends on your brewing method. A coarser grind is suitable for French press, while a finer grind is needed for espresso. Burr grinders are preferred over blade grinders for a consistent grind.</p><p><strong>Water Temperature and Quality:</strong> Use filtered water for the best taste. The ideal water temperature for brewing Arabica is typically between 195-205°F (90-96°C). Water that is too hot can scorch the grounds, while water that is too cool will result in under-extraction.</p><p><strong>Brewing Methods:</strong></p><ul><li><strong>Pour Over:</strong> Offers a clean, bright cup, highlighting the nuanced flavors. Requires patience and precision.</li><li><strong>French Press:</strong> Results in a full-bodied coffee with more oils and sediment.</li><li><strong>Aeropress:</strong> Versatile and quick, allowing for experimentation with different recipes.</li></ul><p>Experiment with these tips, and you\'ll be well on your way to brewing the perfect cup of Arabica coffee that tantalizes your taste buds and invigorates your senses. Happy brewing!</p>',
+    ogImage: 'https://placehold.co/1200x630.png',
+  },
+  {
+    id: '2',
+    title: 'Sustainable Coffee Farming: Our Commitment to the Future',
+    slug: 'sustainable-coffee-farming',
+    excerpt: 'Learn about Bertera Niaga Global\'s dedication to sustainable coffee farming practices, supporting both the environment and local communities.',
+    imageUrl: 'https://placehold.co/600x400.png',
+    imageHint: 'coffee farm sustainability',
+    date: 'October 20, 2024',
+    author: 'Bobby Ishak, Sustainability Lead',
+    content: '<p>At Bertera Niaga Global, sustainability is not just a buzzword; it\'s a core principle that guides our operations from farm to cup. We believe that ethical sourcing and environmental stewardship are essential for the future of coffee and the well-being of the communities that cultivate it.</p><p><strong>Environmental Practices:</strong> We partner with farmers who employ eco-friendly techniques such as shade-grown coffee, water conservation, and organic farming methods. These practices help maintain biodiversity, protect soil health, and reduce our carbon footprint.</p><p><strong>Fair Partnerships:</strong> We are committed to fair trade principles, ensuring that farmers receive equitable prices for their hard work. This empowers local communities, improves livelihoods, and fosters long-term relationships built on trust and mutual respect.</p><p><strong>Community Development:</strong> Beyond fair prices, we invest in projects that support community development in coffee-growing regions. This includes initiatives focused on education, healthcare, and infrastructure improvements.</p><p>Our journey towards a more sustainable coffee industry is ongoing. We continuously seek innovative ways to minimize our environmental impact and maximize our positive social contributions. By choosing Bertera Niaga Global, you are not only enjoying premium Indonesian coffee but also supporting a more sustainable and equitable future for all.</p>',
+    ogImage: 'https://placehold.co/1200x630.png',
+  },
+  {
+    id: '3',
+    title: 'Exploring the Unique Notes of Liberica Coffee',
+    slug: 'exploring-liberica-notes',
+    excerpt: 'Dive into the exotic and rare world of Liberica coffee. Known for its distinctive smoky, woody, and sometimes fruity notes, it\'s a true adventure for the palate.',
+    imageUrl: 'https://placehold.co/600x400.png',
+    imageHint: 'liberica coffee beans',
+    date: 'October 15, 2024',
+    author: 'Gilbert Yoshua, Coffee Connoisseur',
+    content: '<p>Liberica coffee, a less common but increasingly sought-after species, offers a flavor profile unlike any other. Its large, asymmetrical beans and bold aroma hint at the unique tasting experience that awaits.</p><p><strong>A Distinct Flavor Journey:</strong> The taste of Liberica can be quite polarizing but is often described as having a unique combination of smoky, woody, and nutty notes. Some varieties also exhibit surprising fruity or floral undertones, sometimes even a jackfruit-like essence, particularly in beans from regions like Jambi in Sumatra.</p><p><strong>Rarity and Cultivation:</strong> Liberica makes up a small percentage of global coffee production. It is known for its resilience and ability to grow in specific climates where other coffee species might not thrive. Its distinct characteristics make it a prized find for coffee aficionados looking for something truly different.</p><p><strong>Brewing Liberica:</strong> Due to its bold and sometimes intense flavor, brewing Liberica can be an experiment. Medium roasts are often preferred to balance its inherent characteristics. Methods like pour-over or Aeropress can help highlight its unique notes, while a French press might emphasize its body.</p><p>If you\'re looking to expand your coffee horizons, seeking out Liberica is a worthwhile endeavor. Its unconventional profile offers a memorable cup that stands apart from the more common Arabica and Robusta experiences.</p>',
+    ogImage: 'https://placehold.co/1200x630.png',
+  },
+];
+
+export function getAllBlogPostPreviews(): BlogPostPreview[] {
+  return blogPostsData.map(({ id, title, slug, excerpt, imageUrl, imageHint, date, author }) => ({
+    id, title, slug, excerpt, imageUrl, imageHint, date, author,
+  }));
+}
+
+export function getBlogPostBySlug(slug: string): BlogPostFull | undefined {
+  return blogPostsData.find(post => post.slug === slug);
+}

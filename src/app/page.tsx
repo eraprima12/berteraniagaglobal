@@ -3,16 +3,17 @@ import type { Metadata } from 'next';
 import { ParallaxHomeSection } from '../components/sections/parallax-home-section';
 import { ProductShowcaseSection } from '../components/sections/product-showcase-section';
 import { OurStorySection } from '../components/sections/our-story-section';
+import { BlogSection } from '../components/sections/blog-section';
 import { OurTeamSection } from '../components/sections/our-team-section';
 import { ContactUsSection } from '../components/sections/contact-us-section';
 import { AnimatedSection } from '../components/common/AnimatedSection';
 
 export const metadata: Metadata = {
-  title: 'Bertera Niaga Global - Premium Indonesian Coffee Export',
-  description: 'Discover premium Indonesian coffee beans from Bertera Niaga Global. We are a leading producer and wholesaler specializing in Arabica, Robusta, and Liberica coffee for export. Beyond Border, Beyond Expectations.',
+  title: 'Bertera Niaga Global - Premium Indonesian Coffee Export & Blog',
+  description: 'Discover premium Indonesian coffee beans from Bertera Niaga Global. We are a leading producer and wholesaler specializing in Arabica, Robusta, and Liberica coffee for export. Read our blog for coffee insights. Beyond Border, Beyond Expectations.',
   openGraph: {
-    title: 'Bertera Niaga Global - Premium Indonesian Coffee Export',
-    description: 'Your trusted partner for high-quality Indonesian coffee. Explore our range of Arabica, Robusta, and Liberica beans.',
+    title: 'Bertera Niaga Global - Premium Indonesian Coffee Export & Blog',
+    description: 'Your trusted partner for high-quality Indonesian coffee. Explore our range of Arabica, Robusta, and Liberica beans, and read our latest blog posts.',
     images: [
       {
         url: '/images/logo/bertera-logo.png', 
@@ -41,6 +42,10 @@ export default function HomePage() {
 
       <AnimatedSection delay="delay-100">
         <OurStorySection />
+      </AnimatedSection>
+
+      <AnimatedSection delay="delay-100">
+        <BlogSection />
       </AnimatedSection>
 
       <AnimatedSection delay="delay-100">
