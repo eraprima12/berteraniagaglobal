@@ -6,7 +6,6 @@ import { MessageCircle, SendHorizonal, X, User, Loader2, Phone } from 'lucide-re
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { interactiveChatFlow } from '@/ai/flows/interactive-chat-flow';
 
@@ -97,8 +96,8 @@ export function FloatingWhatsAppButton() {
           onClick={toggleOpen}
           variant="default"
           className={cn(
-            "fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-xl z-50 transition-all duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center",
-            "bg-green-500 hover:bg-green-600 text-white"
+            "fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-xl z-50 transition-all duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
+            // Removed "bg-green-500 hover:bg-green-600 text-white" to use theme's primary color via variant="default"
           )}
           aria-label="Open Chat"
         >
