@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import type { BlogPostFull } from '@/data/content';
 import { CalendarDays, UserCircle } from 'lucide-react';
-// Removed ScrollArea import as it's no longer used
 
 interface BlogDetailModalProps {
   post: BlogPostFull | null;
@@ -21,15 +20,15 @@ export function BlogDetailModal({ post, isOpen, onClose }: BlogDetailModalProps)
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogContent className="sm:max-w-3xl md:max-w-4xl lg:max-w-5xl w-[95vw] p-0 bg-background/90 dark:bg-neutral-900/90 backdrop-blur-lg shadow-2xl rounded-2xl border-border max-h-[90vh] flex flex-col">
-        <DialogHeader className="p-4 sm:p-6 pb-2 relative flex-shrink-0 border-b">
-          <DialogTitle className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 line-clamp-3 text-center">{post.title}</DialogTitle>
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs sm:text-sm text-muted-foreground">
+        <DialogHeader className="p-4 sm:p-6 pb-3 relative flex-shrink-0 border-b"> {/* Increased pb slightly */}
+          <DialogTitle className="text-2xl sm:text-3xl font-bold text-primary mb-2 sm:mb-3 line-clamp-3 text-center">{post.title}</DialogTitle> {/* Adjusted margin bottom */}
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-muted-foreground"> {/* Ensured text-sm, adjusted gap-y */}
             <span className="flex items-center gap-1.5">
-              <CalendarDays size={14} />
+              <CalendarDays size={16} /> {/* Increased icon size */}
               {post.date}
             </span>
             <span className="flex items-center gap-1.5">
-              <UserCircle size={14} />
+              <UserCircle size={16} /> {/* Increased icon size */}
               By {post.author}
             </span>
           </div>
