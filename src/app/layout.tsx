@@ -2,19 +2,19 @@
 "use client";
 
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google'; // Changed to Inter
+import { Inter } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '../components/layout/navbar';
 import { Footer } from '../components/layout/footer';
 import { Toaster } from '../components/ui/toaster';
 import { useState, useEffect } from 'react';
 import { LoadingScreen } from '../components/common/LoadingScreen';
+import { FloatingWhatsAppButton } from '../components/common/FloatingWhatsAppButton'; // Added import
 
-// Instantiate Inter font
-const inter = Inter({ // Changed to Inter
-  variable: '--font-inter', // Changed variable name
+const inter = Inter({ 
+  variable: '--font-inter',
   subsets: ['latin'],
-  weight: ['400', '500', '700'], // Common weights for Inter
+  weight: ['400', '500', '700'],
 });
 
 export default function RootLayout({
@@ -45,18 +45,18 @@ export default function RootLayout({
       <head>
         <meta name="description" content="Premium Indonesian coffee producer and wholesaler for export." />
       </head>
-      {/* Apply the Inter font variable to the body */}
-      <body className={`${inter.variable} antialiased font-sans`}> {/* Apply font-sans as a base */}
+      <body className={`${inter.variable} antialiased font-sans`}>
         {isLoading ? (
           <LoadingScreen />
         ) : (
           <>
             <Navbar />
-            <div className="pt-16"> {/* Add padding to offset fixed navbar */}
+            <div className="pt-16">
               {children}
             </div>
             <Footer />
             <Toaster />
+            <FloatingWhatsAppButton /> {/* Added FloatingWhatsAppButton here */}
           </>
         )}
       </body>
