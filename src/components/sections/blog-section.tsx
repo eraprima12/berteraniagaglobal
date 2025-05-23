@@ -13,10 +13,40 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi, // Import CarouselApi type
 } from "@/components/ui/carousel";
+import { useState, useEffect } from 'react'; // Import useState and useEffect
 
 export function BlogSection() {
   const posts = getAllBlogPostPreviews();
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
+
+    const onSelect = () => {
+      setCurrent(api.selectedScrollSnap() + 1);
+    };
+
+    api.on("select", onSelect);
+    api.on("reInit", () => { // Handle re-initialization if necessary
+        setCount(api.scrollSnapList().length);
+        setCurrent(api.selectedScrollSnap() + 1);
+    });
+
+
+    // Cleanup
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
 
   if (!posts || posts.length === 0) {
     return null; 
@@ -33,6 +63,7 @@ export function BlogSection() {
         </div>
 
         <Carousel
+          setApi={setApi} // Pass setApi to the Carousel
           opts={{
             align: "start",
             loop: posts.length > 1, // Loop only if there's more than one post
@@ -100,8 +131,14 @@ export function BlogSection() {
           )}
         </Carousel>
         
+        {count > 0 && posts.length > 1 && ( // Show indicator if there's more than one post
+          <div className="text-center py-2 text-sm text-muted-foreground mt-4">
+            {current} / {count}
+          </div>
+        )}
+        
         {posts.length > 3 && ( // This button might need rethinking in a carousel context if all posts are shown
-           <div className="text-center mt-12">
+           <div className="text-center mt-8">
             <Link href="/blog" passHref legacyBehavior>
                 <Button size="lg" variant="outline" className="bg-primary text-primary-foreground hover:bg-primary/90">
                     View All Posts
