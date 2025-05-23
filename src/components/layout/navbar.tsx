@@ -155,7 +155,7 @@ export function Navbar() {
         }
       }
     }
-  }, [activeSection, pathname, navLinks]);
+  }, [activeSection, pathname]); // Removed navLinks from dependency array as it's constant now
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     const targetPath = href.split('#')[0];
@@ -279,5 +279,3 @@ export function Navbar() {
     </header>
   );
 }
-
-    
