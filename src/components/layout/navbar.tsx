@@ -14,7 +14,6 @@ const navLinks = [
   { href: '/#products', label: 'Products', sectionId: 'products' },
   { href: '/#our-story', label: 'Our Story', sectionId: 'our-story' },
   { href: '/#blog', label: 'Blog', sectionId: 'blog' },
-  { href: '/#our-team', label: 'Our Team', sectionId: 'our-team' },
   { href: '/#contact-us', label: 'Contact Us', sectionId: 'contact-us' },
 ];
 
@@ -124,7 +123,7 @@ export function Navbar() {
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[250px]"> {/* Removed explicit bg-background to inherit from sheetVariants */}
+            <SheetContent side="right" className="w-[250px] bg-white/50 dark:bg-black/50 backdrop-blur-xl">
               <nav className="flex flex-col gap-6 p-6">
                 {navLinks.map((link) => (
                   <Link
