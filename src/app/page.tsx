@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { ParallaxHomeSection } from '../components/sections/parallax-home-section';
 import { ProductShowcaseSection } from '../components/sections/product-showcase-section';
 import { OurStorySection } from '../components/sections/our-story-section';
+import { WhyChooseUsSection } from '../components/sections/why-choose-us-section'; // Added import
 import { BlogSection } from '../components/sections/blog-section';
 import { ClientTestimonialsSection } from '../components/sections/client-testimonials-section';
 import { ContactUsSection } from '../components/sections/contact-us-section';
@@ -42,6 +43,10 @@ export default function HomePage() {
 
       <AnimatedSection delay="delay-100">
         <OurStorySection />
+      </AnimatedSection>
+
+      <AnimatedSection delay="delay-100"> {/* Added WhyChooseUsSection */}
+        <WhyChooseUsSection />
       </AnimatedSection>
 
       <AnimatedSection delay="delay-100">
