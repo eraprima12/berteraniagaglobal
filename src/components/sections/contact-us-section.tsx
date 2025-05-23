@@ -1,16 +1,16 @@
 
 "use client";
 
-import { useActionState } from 'react'; // Updated import
-import { useFormStatus } from 'react-dom'; // Corrected import
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { useEffect, useRef } from 'react';
-import Image from 'next/image';
+import Map, { Marker } from 'react-map-gl';
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { MapPin, Phone, Mail, Loader2, CheckCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Loader2, CheckCircle, Pin } from 'lucide-react';
 import { submitContactForm, ContactFormState } from '../../app/actions';
 import { useToast } from "../../hooks/use-toast";
 
@@ -31,9 +31,12 @@ function SubmitButton() {
 }
 
 export function ContactUsSection() {
-  const [state, formAction] = useActionState(submitContactForm, initialState); // Updated hook
+  const [state, formAction] = useActionState(submitContactForm, initialState);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
+
+  const companyLatitude = -7.2602724;
+  const companyLongitude = 112.6816155;
 
   useEffect(() => {
     if (state.message) {
@@ -43,7 +46,7 @@ export function ContactUsSection() {
           description: state.message,
           variant: "default",
         });
-        formRef.current?.reset(); // Reset form on success
+        formRef.current?.reset(); 
       } else if (state.errors) {
          toast({
           title: "Error",
@@ -131,14 +134,21 @@ export function ContactUsSection() {
                 <CardTitle className="text-2xl text-primary">Our Location</CardTitle>
               </CardHeader>
               <CardContent className="p-0">
-                 <div className="aspect-video relative">
-                    <Image
-                      src="https://placehold.co/600x400.png"
-                      alt="Company Location Map"
-                      layout="fill"
-                      objectFit="cover"
-                      data-ai-hint="map location"
-                    />
+                 <div className="aspect-video relative h-[300px] md:h-[400px]">
+                    <Map
+                      mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+                      initialViewState={{
+                        longitude: companyLongitude,
+                        latitude: companyLatitude,
+                        zoom: 15
+                      }}
+                      style={{width: '100%', height: '100%'}}
+                      mapStyle="mapbox://styles/mapbox/streets-v12"
+                    >
+                      <Marker longitude={companyLongitude} latitude={companyLatitude} anchor="bottom" >
+                        <Pin className="w-8 h-8 text-red-600 fill-red-500" />
+                      </Marker>
+                    </Map>
                   </div>
               </CardContent>
             </Card>

@@ -9,7 +9,7 @@ import { Footer } from '../components/layout/footer';
 import { Toaster } from '../components/ui/toaster';
 import { useState, useEffect } from 'react';
 import { LoadingScreen } from '../components/common/LoadingScreen';
-import { FloatingWhatsAppButton } from '../components/common/FloatingWhatsAppButton'; // Added import
+import { FloatingWhatsAppButton } from '../components/common/FloatingWhatsAppButton';
 
 const inter = Inter({ 
   variable: '--font-inter',
@@ -44,6 +44,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="description" content="Premium Indonesian coffee producer and wholesaler for export." />
+        <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.0/mapbox-gl.css" rel="stylesheet" />
       </head>
       <body className={`${inter.variable} antialiased font-sans`}>
         {isLoading ? (
@@ -56,7 +57,7 @@ export default function RootLayout({
             </div>
             <Footer />
             <Toaster />
-            <FloatingWhatsAppButton /> {/* Added FloatingWhatsAppButton here */}
+            <FloatingWhatsAppButton />
           </>
         )}
       </body>
