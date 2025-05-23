@@ -1,7 +1,7 @@
 
 "use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"; // Removed DialogClose
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import type { ProductDetails } from "@/data/content";
@@ -43,13 +43,10 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogContent className="sm:max-w-3xl md:max-w-4xl lg:max-w-5xl w-[95vw] p-0 bg-background/80 dark:bg-neutral-900/80 backdrop-blur-xl shadow-2xl rounded-2xl border-none overflow-hidden max-h-[90vh] flex flex-col">
-        <DialogHeader className="p-4 sm:p-6 pb-0 relative flex-shrink-0 text-center"> {/* Added text-center */}
+        {/* The DialogContent component from ShadCN UI provides its own close button by default */}
+        <DialogHeader className="p-4 sm:p-6 pb-0 relative flex-shrink-0 text-center">
            <DialogTitle className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 line-clamp-2">{product.name}</DialogTitle>
-           <DialogClose asChild className="absolute top-3 right-3 sm:top-4 sm:right-4">
-             <Button variant="ghost" size="icon" className="rounded-full text-foreground/70 hover:text-foreground hover:bg-foreground/10">
-               <X className="h-5 w-5 sm:h-6 sm:w-6" />
-             </Button>
-           </DialogClose>
+           {/* Removed the explicit <DialogClose> button here */}
         </DialogHeader>
         
         <div className="overflow-y-auto flex-grow">
@@ -67,7 +64,7 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
             </div>
             <div className="flex flex-col justify-between p-4 sm:p-6">
               <div>
-                <div className="flex flex-wrap gap-2 mb-3 sm:mb-4 justify-center md:justify-start"> {/* Center tags on mobile */}
+                <div className="flex flex-wrap gap-2 mb-3 sm:mb-4 justify-center md:justify-start">
                     <span className="text-xs sm:text-sm bg-secondary text-secondary-foreground px-2.5 py-1 rounded-full flex items-center">
                         <Coffee size={14} className="mr-1.5" />
                         {product.coffeeTypeName}
@@ -77,7 +74,7 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
                         Origin: {product.name.split('(')[0].trim()}
                     </span>
                 </div>
-                <p className="text-lg sm:text-xl font-bold text-accent mb-3 sm:mb-4 text-center md:text-left"> {/* Center price on mobile */}
+                <p className="text-lg sm:text-xl font-bold text-accent mb-3 sm:mb-4 text-center md:text-left">
                     {formatPrice(product.price, product.priceUnit)}
                 </p>
                 <h4 className="text-md sm:text-lg font-semibold text-primary mb-1 sm:mb-2 flex items-center"><Layers size={18} className="mr-2"/>Coffee Type Details</h4>
@@ -103,4 +100,3 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
     </Dialog>
   );
 }
-
