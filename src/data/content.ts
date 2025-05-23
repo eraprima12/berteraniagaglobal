@@ -184,21 +184,21 @@ export const testimonialsData: Testimonial[] = [
   },
   {
     id: '2',
-    clientName: 'Siti Aminah',
-    clientCompany: 'Kopi Kita Roastery',
-    clientTitle: 'Head Roaster',
+    clientName: 'Dimas Ilham',
+    clientCompany: 'titik tumbuh',
+    clientTitle: 'Owner',
     testimonialText: "The 'forest friends' approach of Bertera Niaga Global truly resonates with us. The quality of their Arabica, especially the Arjuno, is exceptional. Our customers love the unique flavors and the story behind the beans. Highly recommended!",
     clientImageUrl: 'https://placehold.co/100x100.png',
-    clientImageHint: 'professional woman'
+    clientImageHint: 'professional man'
   },
   {
     id: '3',
-    clientName: 'Budi Santoso',
-    clientCompany: 'Java Gold Coffee Importers',
-    clientTitle: 'Procurement Manager',
+    clientName: 'Achmad Romli',
+    clientCompany: 'Double Dose Coffee',
+    clientTitle: 'Owner',
     testimonialText: "We've been sourcing Robusta from Bertera Niaga Global for our espresso blends, and the consistency and quality are top-notch. Their team is professional, responsive, and their dedication to sustainable practices is a huge plus.",
     clientImageUrl: 'https://placehold.co/100x100.png',
-    clientImageHint: 'smiling man'
+    clientImageHint: 'smiling person'
   },
 ];
 
