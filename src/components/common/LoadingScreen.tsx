@@ -17,7 +17,6 @@ export function LoadingScreen() {
           priority
         />
       </div>
-      <p className="mt-4 text-lg text-primary">Loading, please wait...</p>
     </div>
   );
 }
