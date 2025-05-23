@@ -40,18 +40,26 @@ export async function submitContactForm(
     };
   }
 
-  // Simulate form submission (e.g., send email, save to database)
-  console.log("Contact form submitted:", validatedFields.data);
+  // In a real application, this is where you would send the email.
+  // For example, using a service like SendGrid, Mailgun, or AWS SES.
+  const recipientEmail = "admin@berteraniagaglobal.com";
+  console.log("Contact form submitted. Data that would be sent:");
+  console.log("To:", recipientEmail);
+  console.log("From:", validatedFields.data.email);
+  console.log("Name:", validatedFields.data.name);
+  console.log("Subject:", validatedFields.data.subject);
+  console.log("Message:", validatedFields.data.message);
   
-  // Simulate a delay for network request
+  // Simulate a delay for network request/email sending
   await new Promise(resolve => setTimeout(resolve, 1000));
 
-  // In a real app, you would handle potential errors from your backend here.
+  // In a real app, you would handle potential errors from your email sending service here.
   // For now, we assume success.
 
   return {
-    message: "Thank you for your message! We will get back to you soon.",
+    message: `Thank you, ${validatedFields.data.name}! Your message about "${validatedFields.data.subject}" has been received. We will get back to you soon. (Normally, this would be sent to ${recipientEmail})`,
     errors: null,
     success: true,
   };
 }
+
