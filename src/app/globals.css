@@ -98,17 +98,17 @@
 @layer utilities {
   .product-card-animate-in {
     opacity: 0; /* Initial state for animation */
-    animation: fadeInAndSlightUpProductCard 0.4s ease-out forwards;
+    animation: fadeInAndSlightUpProductCard 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; /* Faster with different easing */
   }
 
   @keyframes fadeInAndSlightUpProductCard {
     from {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(20px) scale(0.98); /* More pronounced Y movement and subtle scale down */
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
   }
 }
