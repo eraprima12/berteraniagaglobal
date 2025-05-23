@@ -2,13 +2,13 @@
 "use client";
 
 import { Button } from '../ui/button';
-import { Dancing_Script } from 'next/font/google'; // Import the Dancing Script font
+import { Caveat } from 'next/font/google'; // Changed from Dancing_Script to Caveat
 
-// Configure the font
-const dancingScript = Dancing_Script({
+// Configure the Caveat font
+const caveat = Caveat({
   subsets: ['latin'],
-  weight: ['700'], // '700' is often a good weight for headlines in script fonts
-  variable: '--font-dancing-script',
+  weight: ['700'], // Caveat supports 400, 500, 600, 700. '700' for bold.
+  variable: '--font-caveat', // Optional: if you want to use it as a CSS variable
 });
 
 export function ParallaxHomeSection() {
@@ -32,14 +32,11 @@ export function ParallaxHomeSection() {
       
       <div className="relative z-20 p-4 max-w-3xl">
         <h1 
-          className={`${dancingScript.className} text-4xl sm:text-5xl md:text-6xl font-bold mb-8 leading-tight`}
-          style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }} // Slightly adjusted shadow for script font
+          className={`${caveat.className} text-5xl sm:text-6xl md:text-7xl mb-8 leading-tight`} // Applied Caveat font and adjusted sizes
+          style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.6)' }} // Slightly adjusted shadow for better readability
         >
           A sip from nusantara soil, to your soul
         </h1>
-        {/* <p className="text-xl md:text-2xl mb-8" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>
-          Your tagline here or a brief description.
-        </p> */}
         <Button 
           size="lg" 
           variant="default" 
