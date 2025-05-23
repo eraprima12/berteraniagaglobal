@@ -2,9 +2,9 @@
 "use client";
 
 import Image from 'next/image';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"; // DialogClose removed
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import type { BlogPostFull } from '@/data/content';
-import { CalendarDays, UserCircle } from 'lucide-react'; // X icon removed
+import { CalendarDays, UserCircle } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface BlogDetailModalProps {
@@ -20,7 +20,7 @@ export function BlogDetailModal({ post, isOpen, onClose }: BlogDetailModalProps)
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogContent className="sm:max-w-3xl md:max-w-4xl lg:max-w-5xl w-[95vw] p-0 bg-background/90 dark:bg-neutral-900/90 backdrop-blur-lg shadow-2xl rounded-2xl border-border overflow-hidden max-h-[90vh] flex flex-col">
+      <DialogContent className="sm:max-w-3xl md:max-w-4xl lg:max-w-5xl w-[95vw] p-0 bg-background/90 dark:bg-neutral-900/90 backdrop-blur-lg shadow-2xl rounded-2xl border-border max-h-[90vh] flex flex-col">
         <DialogHeader className="p-4 sm:p-6 pb-2 relative flex-shrink-0 border-b">
           <DialogTitle className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 line-clamp-3 text-center">{post.title}</DialogTitle>
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs sm:text-sm text-muted-foreground">
@@ -33,10 +33,10 @@ export function BlogDetailModal({ post, isOpen, onClose }: BlogDetailModalProps)
               By {post.author}
             </span>
           </div>
-          {/* The default DialogContent close button will be used. Removed custom button. */}
+          {/* The default DialogContent close button (an X icon) will be used. */}
         </DialogHeader>
         
-        <ScrollArea className="flex-grow"> {/* Added ScrollArea */}
+        <ScrollArea className="flex-grow min-h-0"> {/* Added min-h-0 */}
           <article className="p-4 sm:p-6 md:p-8">
             <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 mb-6 sm:mb-8 rounded-lg overflow-hidden shadow-md">
               <Image
