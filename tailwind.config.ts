@@ -13,7 +13,7 @@ export default {
   	extend: {
       fontFamily: {
         sans: ['var(--font-inter)', ...defaultTheme.fontFamily.sans],
-        'alex-brush': ['var(--font-alex-brush)', 'cursive'], // Ensure Tailwind knows this font variable
+        // Removed 'alex-brush' from here as we're applying it directly
       },
   		colors: {
   			background: 'hsl(var(--background))',
