@@ -19,8 +19,8 @@ export function ParallaxHomeSection() {
       id="home" 
       className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden"
     >
-      {/* Overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/50 z-10"></div>
+      {/* Overlay for better text readability and frosted glass effect */}
+      <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-md z-10"></div>
       
       <div className="relative z-20 p-4 max-w-3xl">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }}>
